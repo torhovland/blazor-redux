@@ -12,5 +12,16 @@ namespace BlazorRedux
         }
 
         public TModel Mdl { get; private set; }
+
+        public event EventHandler Change;
+
+        public void OnChange(EventArgs e)
+        {
+            EventHandler handler = Change;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
     }
 }

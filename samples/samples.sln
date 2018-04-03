@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorStandalone", "BlazorStandalone\BlazorStandalone.csproj", "{1865B612-2B05-4425-81F0-01515EA6FE01}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorRedux", "..\src\BlazorRedux\BlazorRedux.csproj", "{D5378F56-8A9B-49BF-ABA6-FE1D4F19B93E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{61B0B5CA-4319-4C7B-891C-A24D456D4316}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +19,16 @@ Global
 		{1865B612-2B05-4425-81F0-01515EA6FE01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1865B612-2B05-4425-81F0-01515EA6FE01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1865B612-2B05-4425-81F0-01515EA6FE01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5378F56-8A9B-49BF-ABA6-FE1D4F19B93E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5378F56-8A9B-49BF-ABA6-FE1D4F19B93E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5378F56-8A9B-49BF-ABA6-FE1D4F19B93E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5378F56-8A9B-49BF-ABA6-FE1D4F19B93E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D5378F56-8A9B-49BF-ABA6-FE1D4F19B93E} = {61B0B5CA-4319-4C7B-891C-A24D456D4316}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9BD29FF-CC9F-443A-A481-C6A393C955A0}

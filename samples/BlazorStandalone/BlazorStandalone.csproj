@@ -13,4 +13,8 @@
     <DotNetCliToolReference Include="Microsoft.AspNetCore.Blazor.Cli" Version="0.2.0-preview1-10152" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\BlazorRedux\BlazorRedux.csproj" />
+  </ItemGroup>
+
 </Project>

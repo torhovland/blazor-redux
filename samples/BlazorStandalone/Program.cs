@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Blazor.Browser.Rendering;
 using Microsoft.AspNetCore.Blazor.Browser.Services;
 using System;
+using BlazorRedux;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorStandalone
 {
@@ -10,7 +12,7 @@ namespace BlazorStandalone
         {
             var serviceProvider = new BrowserServiceProvider(configure =>
             {
-                // Add any custom services here
+                configure.AddSingleton(new Store<MyModel>(MyModel.Init));
             });
 
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");

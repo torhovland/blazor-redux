@@ -42,11 +42,4 @@ else
         forecasts = await Http.GetJsonAsync<WeatherForecast[]>("/sample-data/weather.json");
     }
 
-    class WeatherForecast
-    {
-        public DateTime Date { get; set; }
-        public int TemperatureC { get; set; }
-        public int TemperatureF { get; set; }
-        public string Summary { get; set; }
-    }
 }

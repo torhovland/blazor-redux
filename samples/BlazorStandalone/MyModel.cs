@@ -29,14 +29,15 @@ namespace BlazorStandalone
 
         public async Task ProcessAsync(object action)
         {
-            if (action is IncrementAction i)
+            switch (action)
             {
-                Count += i.Value;
-            }
-            else if (action is LoadWeatherAction)
-            {
-                Forecasts = await Http.GetJsonAsync<WeatherForecast[]>(
-                    "/sample-data/weather.json");
+                case IncrementByValueAction a:
+                    Count += a.Value;
+                    break;
+                case LoadWeatherAction a:
+                    Forecasts = await a.Http.GetJsonAsync<WeatherForecast[]>(
+                        "/sample-data/weather.json");
+                    break;
             }
         }
     }

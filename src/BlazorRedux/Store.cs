@@ -6,9 +6,9 @@ namespace BlazorRedux
 {
     public class Store<TModel>
     {
-        public Store(Func<TModel> init)
+        public Store(Func<TModel> initialModel)
         {
-            Mdl = init();
+            Mdl = initialModel();
         }
 
         public TModel Mdl { get; private set; }

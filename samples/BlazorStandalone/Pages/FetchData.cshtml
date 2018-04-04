@@ -6,7 +6,7 @@
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (@Mdl.Forecasts == null)
+@if (@State.Forecasts == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -22,7 +22,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in @Mdl.Forecasts)
+            @foreach (var forecast in @State.Forecasts)
             {
                 <tr>
                     <td>@forecast.Date.ToShortDateString()</td>

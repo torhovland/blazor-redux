@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
 
 namespace BlazorStandalone
 {
@@ -11,16 +12,13 @@ namespace BlazorStandalone
             Value = value;
         }
 
-        public int Value { get; private set; }
+        public int Value { get; set; }
     }
 
-    public class LoadWeatherAction
-    {
-        public LoadWeatherAction(HttpClient http)
-        {
-            Http = http;
-        }
+    public class LoadWeatherAction {}
 
-        public HttpClient Http { get; private set; }
+    public class ReceiveWeatherAction
+    {
+        public IEnumerable<WeatherForecast> Forecasts { get; set; }
     }
 }

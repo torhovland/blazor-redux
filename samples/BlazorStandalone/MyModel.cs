@@ -10,35 +10,12 @@ using Microsoft.AspNetCore.Blazor.Components;
 
 namespace BlazorStandalone
 {
-    public class MyModel : IModel
+    public class MyModel
     {
         [Inject]
         public HttpClient Http { get; set; }
 
-        public int Count { get; private set; }
-        public IEnumerable<WeatherForecast> Forecasts { get; private set; }
-
-        public static MyModel Init()
-        {
-            return new MyModel
-            {
-                Count = 5,
-                Forecasts = new List<WeatherForecast>()
-            };
-        }
-
-        public async Task ProcessAsync(object action)
-        {
-            switch (action)
-            {
-                case IncrementByValueAction a:
-                    Count += a.Value;
-                    break;
-                case LoadWeatherAction a:
-                    Forecasts = await a.Http.GetJsonAsync<WeatherForecast[]>(
-                        "/sample-data/weather.json");
-                    break;
-            }
-        }
+        public int Count { get; set; }
+        public IEnumerable<WeatherForecast> Forecasts { get; set; }
     }
 }

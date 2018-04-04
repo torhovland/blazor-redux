@@ -13,6 +13,6 @@
 {
     protected override async Task OnInitAsync()
     {
-        await ProcessAsync(new LoadWeatherAction(Http));
+        await DispatchAsync(ActionCreators.LoadWeather(Http));
     }
 }

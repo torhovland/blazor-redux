@@ -4,6 +4,6 @@
 
 <h1>Counter</h1>
 
-<p>Current count: @Mdl.Count</p>
+<p>Current count: @State.Count</p>
 
-<button @onclick(async () => await ProcessAsync(new IncrementByValueAction(3)))>Click me</button>
+<button @onclick(() => Dispatch(new IncrementByValueAction(3)))>Click me</button>

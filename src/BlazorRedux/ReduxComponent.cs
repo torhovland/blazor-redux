@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Blazor.Components;
 
 namespace BlazorRedux
 {
-    public class ReduxComponent<TModel> : BlazorComponent, IDisposable where TModel : IModel
+    public class ReduxComponent<TState> : BlazorComponent, IDisposable
     {
         [Inject]
-        public Store<TModel> Store { get; set; }
+        public Store<TState> Store { get; set; }
 
-        public TModel Mdl => Store.Mdl;
+        public TState State => Store.State;
 
         protected override void OnInit()
         {
@@ -28,10 +28,14 @@ namespace BlazorRedux
             StateHasChanged();
         }
 
-        public async Task ProcessAsync(object action)
+        public void Dispatch(object action)
         {
-            await Mdl.ProcessAsync(action);
-            Store.OnChange(null);
+            Store.Dispatch(action);
+        }
+
+        public Task DispatchAsync(AsyncActionsCreator<TState> actionsCreator)
+        {
+            return Store.DispatchAsync(actionsCreator);
         }
     }
 }

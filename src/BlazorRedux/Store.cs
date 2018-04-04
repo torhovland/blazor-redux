@@ -1,27 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BlazorRedux
 {
-    public class Store<TModel>
+    public delegate object Dispatcher(object action);
+    public delegate TState Reducer<TState>(TState previousState, object action);
+    public delegate Task AsyncActionsCreator<in TState>(Dispatcher dispatcher, TState state);
+    
+    public class Store<TState>
     {
-        public Store(Func<TModel> initialModel)
+        private readonly object _syncRoot = new object();
+        private TState _lastState;
+        private readonly Reducer<TState> _reducer;
+
+        public Store(Reducer<TState> reducer, TState initialState = default(TState))
         {
-            Mdl = initialModel();
+            _reducer = reducer;
+            _lastState = initialState;
         }
 
-        public TModel Mdl { get; private set; }
+        public TState State => _lastState;
 
         public event EventHandler Change;
 
-        public void OnChange(EventArgs e)
+        void OnChange(EventArgs e)
         {
             EventHandler handler = Change;
-            if (handler != null)
+            handler?.Invoke(this, e);
+        }
+
+        public object Dispatch(object action)
+        {
+            lock (_syncRoot)
             {
-                handler(this, e);
+                _lastState = _reducer(_lastState, action);
             }
+
+            OnChange(null);
+
+            return action;
+        }
+
+        public Task DispatchAsync(AsyncActionsCreator<TState> actionsCreator)
+        {
+            return actionsCreator(Dispatch, State);
         }
     }
 }

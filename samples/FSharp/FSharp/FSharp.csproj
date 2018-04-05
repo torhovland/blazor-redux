@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\BlazorRedux\BlazorRedux.csproj" />
+    <ProjectReference Include="..\FSharpLib\FSharpLib.fsproj" />
   </ItemGroup>
 
 </Project>

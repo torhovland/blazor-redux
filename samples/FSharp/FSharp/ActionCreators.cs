@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using BlazorRedux;
+using FSharpLib;
 using Microsoft.AspNetCore.Blazor;
 
 namespace FSharp
@@ -10,15 +11,12 @@ namespace FSharp
         {
             return async (dispatch, state) =>
             {
-                dispatch(new LoadWeatherAction());
+                dispatch(MyMsg.LoadWeather);
 
                 var forecasts = await http.GetJsonAsync<WeatherForecast[]>(
                     "/sample-data/weather.json");
 
-                dispatch(new ReceiveWeatherAction
-                {
-                    Forecasts = forecasts
-                });
+                dispatch(MyMsg.NewReceiveWeather(forecasts));
             };
         }
     }

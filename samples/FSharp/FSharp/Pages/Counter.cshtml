@@ -1,9 +1,10 @@
 ﻿@page "/counter"
 @inherits MyAppComponent
 @using FSharp
+@using FSharpLib
 
 <h1>Counter</h1>
 
 <p>Current count: @State.Count</p>
 
-<button @onclick(() => Dispatch(new IncrementByValueAction(3)))>Click me</button>
+<button @onclick(() => Dispatch(MyMsg.NewIncrementByValue(3)))>Click me</button>

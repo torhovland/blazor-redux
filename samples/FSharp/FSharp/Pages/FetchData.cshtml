@@ -1,8 +1,7 @@
 ﻿@page "/fetchdata"
 @inherits MyAppComponent
 @inject HttpClient Http
-@using FSharp
-@using Microsoft.AspNetCore.Blazor.Components
+@using FSharpLib
 
 <h1>Weather forecast</h1>
 
@@ -24,7 +23,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in @State.Forecasts)
+            @foreach (var forecast in @State.Forecasts.Value)
             {
                 <tr>
                     <td>@forecast.Date.ToShortDateString()</td>

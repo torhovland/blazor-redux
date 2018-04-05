@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Blazor.Browser.Rendering;
+﻿using BlazorRedux;
+using Microsoft.AspNetCore.Blazor.Browser.Rendering;
 using Microsoft.AspNetCore.Blazor.Browser.Services;
-using System;
-using BlazorRedux;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorStandalone
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             var serviceProvider = new BrowserServiceProvider(configure =>
             {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Blazor;
+﻿using System.Collections.Generic;
 
 namespace BlazorStandalone
 {
@@ -30,7 +26,8 @@ namespace BlazorStandalone
             }
         }
 
-        private static IEnumerable<WeatherForecast> ForecastsReducer(IEnumerable<WeatherForecast> forecasts, object action)
+        private static IEnumerable<WeatherForecast> ForecastsReducer(IEnumerable<WeatherForecast> forecasts,
+            object action)
         {
             switch (action)
             {

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
 
 namespace BlazorStandalone
 {
-    public class IncrementByOneAction {}
+    public class IncrementByOneAction
+    {
+    }
 
     public class IncrementByValueAction
     {
@@ -15,7 +16,9 @@ namespace BlazorStandalone
         public int Value { get; set; }
     }
 
-    public class LoadWeatherAction {}
+    public class LoadWeatherAction
+    {
+    }
 
     public class ReceiveWeatherAction
     {

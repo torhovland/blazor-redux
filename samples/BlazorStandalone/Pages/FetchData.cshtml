@@ -1,6 +1,8 @@
 ﻿@page "/fetchdata"
 @inherits MyAppComponent
+@inject HttpClient Http
 @using BlazorStandalone
+@using Microsoft.AspNetCore.Blazor.Components
 
 <h1>Weather forecast</h1>
 
@@ -33,6 +35,8 @@ else
             }
         </tbody>
     </table>
+
+    <button @onclick(() => DispatchAsync(ActionCreators.LoadWeather(Http)))>Reload weather</button>
 }
 
 <Counter />

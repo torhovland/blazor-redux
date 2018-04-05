@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Blazor.Components;
 
 namespace BlazorRedux
 {
-    public class ReduxComponent<TState> : BlazorComponent, IDisposable
+    public class ReduxComponent<TState, TAction> : BlazorComponent, IDisposable
     {
-        [Inject] public Store<TState> Store { get; set; }
+        [Inject] public Store<TState, TAction> Store { get; set; }
 
         public TState State => Store.State;
 
@@ -25,12 +25,12 @@ namespace BlazorRedux
             StateHasChanged();
         }
 
-        public void Dispatch(object action)
+        public void Dispatch(TAction action)
         {
             Store.Dispatch(action);
         }
 
-        public Task DispatchAsync(AsyncActionsCreator<TState> actionsCreator)
+        public Task DispatchAsync(AsyncActionsCreator<TState, TAction> actionsCreator)
         {
             return Store.DispatchAsync(actionsCreator);
         }

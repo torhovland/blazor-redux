@@ -22,7 +22,7 @@ type MyMsg =
     | ReceiveWeather of r : WeatherForecast[]
 
 type MyAppComponent() =
-    inherit ReduxComponent<MyModel>()
+    inherit ReduxComponent<MyModel, MyMsg>()
 
 module MyFuncs =
     let MyReducer state action =
@@ -32,7 +32,4 @@ module MyFuncs =
             | LoadWeather -> { state with Forecasts = None }
             | ReceiveWeather r -> { state with Forecasts = Some r }
 
-    let reducer = Reducer<MyModel>(fun state action -> 
-        MyReducer state (action :?> MyMsg))
-
-    let InitStore = new Store<_>(reducer, { Count = 0; Forecasts = None })
+    let InitStore = new Store<MyModel, MyMsg>(MyReducer, { Count = 0; Forecasts = None })

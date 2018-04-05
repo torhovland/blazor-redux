@@ -11,7 +11,7 @@ namespace BlazorStandalone
         {
             var serviceProvider = new BrowserServiceProvider(configure =>
             {
-                configure.AddSingleton(new Store<MyModel>(Reducers.MainReducer, new MyModel()));
+                configure.AddSingleton(new Store<MyModel, IAction>(Reducers.MainReducer, new MyModel()));
             });
 
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");

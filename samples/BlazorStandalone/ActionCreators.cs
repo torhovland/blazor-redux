@@ -6,7 +6,7 @@ namespace BlazorStandalone
 {
     public static class ActionCreators
     {
-        public static AsyncActionsCreator<MyModel> LoadWeather(HttpClient http)
+        public static AsyncActionsCreator<MyModel, IAction> LoadWeather(HttpClient http)
         {
             return async (dispatch, state) =>
             {

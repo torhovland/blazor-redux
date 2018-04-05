@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using BlazorRedux;
 
 namespace BlazorStandalone
 {
-    public class IncrementByOneAction
+    public class IncrementByOneAction : IAction
     {
     }
 
-    public class IncrementByValueAction
+    public class IncrementByValueAction : IAction
     {
         public IncrementByValueAction(int value)
         {
@@ -16,11 +17,11 @@ namespace BlazorStandalone
         public int Value { get; set; }
     }
 
-    public class LoadWeatherAction
+    public class LoadWeatherAction : IAction
     {
     }
 
-    public class ReceiveWeatherAction
+    public class ReceiveWeatherAction : IAction
     {
         public IEnumerable<WeatherForecast> Forecasts { get; set; }
     }

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace BlazorRedux
 {
-    public delegate object Dispatcher(object action);
+    public delegate object Dispatcher<in TAction>(TAction action);
 
-    public delegate TState Reducer<TState>(TState previousState, object action);
+    // public delegate TState Reducer<TState, in TAction>(TState previousState, TAction action);
 
-    public delegate Task AsyncActionsCreator<in TState>(Dispatcher dispatcher, TState state);
+    public delegate Task AsyncActionsCreator<in TState, out TAction>(Dispatcher<TAction> dispatcher, TState state);
 }

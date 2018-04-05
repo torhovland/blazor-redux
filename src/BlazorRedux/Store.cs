@@ -3,15 +3,21 @@ using System.Threading.Tasks;
 
 namespace BlazorRedux
 {
-    public class Store<TState>
+    public class Store<TState, TAction>
     {
-        private readonly Reducer<TState> _reducer;
+        private readonly Func<TState, TAction, TState> _reducer;
         private readonly object _syncRoot = new object();
 
-        public Store(Reducer<TState> reducer, TState initialState = default(TState))
+        public Store(Func<TState, TAction, TState> reducer, TState initialState = default(TState))
         {
+            Console.WriteLine("Working Store constructor.");
             _reducer = reducer;
             State = initialState;
+        }
+
+        // This is here only to satisy the compiler, but isn't actually used
+        public Store(Func<TState, TAction> reducer, TState initialState = default(TState))
+        {
         }
 
         public TState State { get; private set; }
@@ -24,7 +30,7 @@ namespace BlazorRedux
             handler?.Invoke(this, e);
         }
 
-        public object Dispatch(object action)
+        public object Dispatch(TAction action)
         {
             lock (_syncRoot)
             {
@@ -36,7 +42,7 @@ namespace BlazorRedux
             return action;
         }
 
-        public Task DispatchAsync(AsyncActionsCreator<TState> actionsCreator)
+        public Task DispatchAsync(AsyncActionsCreator<TState, TAction> actionsCreator)
         {
             return actionsCreator(Dispatch, State);
         }

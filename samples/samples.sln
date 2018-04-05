@@ -5,9 +5,11 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorStandalone", "BlazorStandalone\BlazorStandalone.csproj", "{1865B612-2B05-4425-81F0-01515EA6FE01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorRedux", "..\src\BlazorRedux\BlazorRedux.csproj", "{D5378F56-8A9B-49BF-ABA6-FE1D4F19B93E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorRedux", "..\src\BlazorRedux\BlazorRedux.csproj", "{D5378F56-8A9B-49BF-ABA6-FE1D4F19B93E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{61B0B5CA-4319-4C7B-891C-A24D456D4316}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FSharp", "FSharp\FSharp\FSharp.csproj", "{E4B6216C-3F9D-451C-A60B-F1D96F45E93E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{D5378F56-8A9B-49BF-ABA6-FE1D4F19B93E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5378F56-8A9B-49BF-ABA6-FE1D4F19B93E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5378F56-8A9B-49BF-ABA6-FE1D4F19B93E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4B6216C-3F9D-451C-A60B-F1D96F45E93E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4B6216C-3F9D-451C-A60B-F1D96F45E93E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4B6216C-3F9D-451C-A60B-F1D96F45E93E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4B6216C-3F9D-451C-A60B-F1D96F45E93E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

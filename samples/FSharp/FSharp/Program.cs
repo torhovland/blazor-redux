@@ -1,5 +1,4 @@
-﻿using BlazorRedux;
-using FSharpLib;
+﻿using FSharpLib;
 using Microsoft.AspNetCore.Blazor.Browser.Rendering;
 using Microsoft.AspNetCore.Blazor.Browser.Services;
 using Microsoft.Extensions.DependencyInjection;

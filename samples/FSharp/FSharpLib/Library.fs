@@ -32,4 +32,4 @@ module MyFuncs =
             | LoadWeather -> { state with Forecasts = None }
             | ReceiveWeather r -> { state with Forecasts = Some r }
 
-    let InitStore = new Store<MyModel, MyMsg>(Func<MyModel, MyMsg, MyModel>MyReducer, { Count = 0; Forecasts = None })
+    let InitStore = new Store<MyModel, MyMsg>(Reducer<MyModel, MyMsg>MyReducer, { Count = 0; Forecasts = None })

@@ -5,10 +5,10 @@ namespace BlazorRedux
 {
     public class Store<TState, TAction>
     {
-        private readonly Func<TState, TAction, TState> _reducer;
+        private readonly Reducer<TState, TAction> _reducer;
         private readonly object _syncRoot = new object();
 
-        public Store(Func<TState, TAction, TState> reducer, TState initialState = default(TState))
+        public Store(Reducer<TState, TAction> reducer, TState initialState = default(TState))
         {
             _reducer = reducer;
             State = initialState;

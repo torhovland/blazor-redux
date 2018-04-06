@@ -15,11 +15,6 @@ namespace BlazorRedux
             State = initialState;
         }
 
-        // This is here only to satisy the compiler, but isn't actually used
-        public Store(Func<TState, TAction> reducer, TState initialState = default(TState))
-        {
-        }
-
         public TState State { get; private set; }
 
         public event EventHandler Change;

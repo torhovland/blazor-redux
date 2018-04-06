@@ -10,7 +10,6 @@ namespace BlazorRedux
 
         public Store(Func<TState, TAction, TState> reducer, TState initialState = default(TState))
         {
-            Console.WriteLine("Working Store constructor.");
             _reducer = reducer;
             State = initialState;
         }

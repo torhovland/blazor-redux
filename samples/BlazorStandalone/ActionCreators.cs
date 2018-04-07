@@ -10,7 +10,7 @@ namespace BlazorStandalone
         {
             return async (dispatch, state) =>
             {
-                dispatch(new LoadWeatherAction());
+                dispatch(new ClearWeatherAction());
 
                 var forecasts = await http.GetJsonAsync<WeatherForecast[]>(
                     "/sample-data/weather.json");

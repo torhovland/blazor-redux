@@ -17,7 +17,7 @@ namespace BlazorStandalone
         public int Value { get; set; }
     }
 
-    public class LoadWeatherAction : IAction
+    public class ClearWeatherAction : IAction
     {
     }
 

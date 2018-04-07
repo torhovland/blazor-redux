@@ -32,7 +32,7 @@ namespace BlazorStandalone
         {
             switch (action)
             {
-                case LoadWeatherAction _:
+                case ClearWeatherAction _:
                     return null;
                 case ReceiveWeatherAction a:
                     return a.Forecasts;

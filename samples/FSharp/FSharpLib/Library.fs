@@ -18,7 +18,7 @@ type MyModel =
 type MyMsg =
     | IncrementByOne
     | IncrementByValue of n : int
-    | LoadWeather
+    | ClearWeather
     | ReceiveWeather of r : WeatherForecast[]
 
 type MyAppComponent() =
@@ -29,7 +29,7 @@ module MyFuncs =
         match action with
             | IncrementByOne -> { state with Count = state.Count + 1 }
             | IncrementByValue n -> { state with Count = state.Count + n }
-            | LoadWeather -> { state with Forecasts = None }
+            | ClearWeather -> { state with Forecasts = None }
             | ReceiveWeather r -> { state with Forecasts = Some r }
 
     let InitStore = new Store<MyModel, MyMsg>(Reducer<MyModel, MyMsg>MyReducer, { Count = 0; Forecasts = None })
@@ -43,7 +43,7 @@ module ActionCreators =
     let LoadWeather (http: HttpClient) =
         let t = fun (dispatch: Dispatcher<MyMsg>) state -> 
             task {
-                dispatch.Invoke(MyMsg.LoadWeather) |> ignore
+                dispatch.Invoke(MyMsg.ClearWeather) |> ignore
                 let! forecasts = http.GetJsonAsync<WeatherForecast[]>("/sample-data/weather.json") |> Async.AwaitTask
                 dispatch.Invoke(MyMsg.ReceiveWeather forecasts) |> ignore
             } :> Task

@@ -24,7 +24,7 @@ namespace BlazorRedux
             handler?.Invoke(this, e);
         }
 
-        public void Dispatch(TAction action)
+        public TAction Dispatch(TAction action)
         {
             lock (_syncRoot)
             {
@@ -32,6 +32,7 @@ namespace BlazorRedux
             }
 
             OnChange(null);
+            return action;
         }
 
         public Task DispatchAsync(AsyncActionsCreator<TState, TAction> actionsCreator)

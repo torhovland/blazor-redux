@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using BlazorRedux;
 
 namespace BlazorStandalone
 {
     public static class Reducers
     {
-        public static MyModel MainReducer(MyModel state, object action)
+        public static MyModel MainReducer(MyModel state, IAction action)
         {
             return new MyModel
             {
@@ -13,7 +14,7 @@ namespace BlazorStandalone
             };
         }
 
-        private static int CountReducer(int count, object action)
+        private static int CountReducer(int count, IAction action)
         {
             switch (action)
             {
@@ -27,7 +28,7 @@ namespace BlazorStandalone
         }
 
         private static IEnumerable<WeatherForecast> ForecastsReducer(IEnumerable<WeatherForecast> forecasts,
-            object action)
+            IAction action)
         {
             switch (action)
             {

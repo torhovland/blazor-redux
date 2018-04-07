@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Library.fs" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor" Version="0.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\BlazorReduxFS\BlazorReduxFS.fsproj" />
+    <Compile Include="Library.fs" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 
 This library offers [Redux](https://redux.js.org)-style state management for [Blazor](https://github.com/aspnet/Blazor), with support for both C# and F#. The implementation is based on [Redux.NET](https://github.com/GuillaumeSalles/redux.NET).
 
-The combination of Blazor and Redux becomes an incredibly compelling platform for frontend development. More compelling than any other alternative, if you ask me:
+The combination of Blazor and Redux becomes an incredibly compelling platform for frontend development&mdash;more compelling than any other alternative, if you ask me:
 
 - Blazor uses .NET, thus comes with a strong type-system built-in, like [Elm](http://elm-lang.org), [Purescript](http://www.purescript.org), [OCaml](https://bucklescript.github.io), and to some degree [Typescript](https://www.typescriptlang.org).
 - With ASP.NET already such a viable option for the backend, this opens up for a very strong [isomorphic apps model](https://hackernoon.com/isomorphic-universal-boilerplate-react-redux-server-rendering-tutorial-example-webpack-compenent-6e22106ae285) with shared .NET code on the frontend and backend.
@@ -13,8 +13,8 @@ The combination of Blazor and Redux becomes an incredibly compelling platform fo
 ## Advantages over vanilla Blazor
 
 - Implements a one-way model-update-view architecture, by many considered to be [more robust and easier to reason about](https://www.exclamationlabs.com/blog/the-case-for-unidirectional-data-flow/) than a two-way data binding as found in Angular. 
-- Application state is kept in a single state store. This facilitates advanced features such as [undo/redo](https://github.com/elm-community/undo-redo), [hydration of application state](https://github.com/rt2zz/redux-persist), and [time-traveling debuggers](http://debug.elm-lang.org).
-- Any Blazor component that is upgraded to a Flatware component will subscribe to changes in the state store and automatically update its view, so you don't have to worry about calling `StateHasChanged()`.
+- Application state is kept in a single state store, facilitating advanced features such as [undo/redo](https://github.com/elm-community/undo-redo), [hydration of application state](https://github.com/rt2zz/redux-persist), and [time-traveling debuggers](http://debug.elm-lang.org).
+- Any Blazor component upgraded to a Redux component will subscribe to changes in the state store and automatically update its view, so you don't have to worry about calling `StateHasChanged()`.
 - Blazor Redux supports F#, which means you can take advantage of some advanced language features when designing your types, actions and reducer logic. The [discriminated union types](https://fsharpforfunandprofit.com/posts/discriminated-unions) are perfect for designing type-safe application messages, and [the `with` keyword in record types](https://fsharpforfunandprofit.com/posts/records/) makes it simple to work with immutable types in your reducer logic. Not to mention that a model with many small types can be created with much less ceremony. F# lends itself well to [type driven development](https://fsharpforfunandprofit.com/series/designing-with-types.html). However, the Blazor project itself and the Razor pages must be C#.
 
 ## Getting started
@@ -82,13 +82,13 @@ type WeatherForecast() =
 
 ### C#
 
-It is recommended that you collect all your actions in a file called `Actions.cs`. An action can be as simple as this:
+It is recommended that you collect all your actions in a file called `Actions.cs`. An action can be as simple as:
 
 ```csharp
 public class IncrementByOneAction : IAction {}
 ```
 
-The actions need to have a common base type, which is the one you configure on your store in `Program.cs`. You can use the provided marker interface `IAction` for this.
+The actions need to have a common base type, which is the one you configure on your store in `Program.cs`. You can use the provided marker interface `IAction`.
 
 You can also have properties on your actions:
 
@@ -115,7 +115,7 @@ And you can take constructor arguments if you like:
 
 ### F#
 
-This is where discriminated union types really shine. Just define your actions like this:
+This is where discriminated union types really shine. Just define your actions this way:
 
 ```fsharp
 type MyMsg =
@@ -138,7 +138,7 @@ configure.AddSingleton(
 
 ### C#
 
-You can define your reducer logic like this. Note that this uses pattern matching to easily cast the action type and extract parameters such as the `Value` property on `IncrementByValueAction`.
+You can define your reducer logic as follows. Note that we use pattern matching to easily cast the action type and extract parameters such as the `Value` property on `IncrementByValueAction`.
 
 ```csharp
 public static int CountReducer(int count, IAction action)
@@ -155,7 +155,7 @@ public static int CountReducer(int count, IAction action)
 }
 ```
 
-If you like, you can have one big reducer with cases for each of your application actions, or you can break them up and create a root reducer like this:
+You can have one big reducer with cases for each of your application actions, or you can break them up and create a root reducer:
 
 ```csharp
 public static MyModel MainReducer(MyModel state, IAction action)
@@ -168,7 +168,7 @@ public static MyModel MainReducer(MyModel state, IAction action)
 }
 ```
 
-Since C# doesn't have as good support for dealing with immutable types as F# does, breaking the reducers up like this is a decent way to handle it. It's good practice to leave the incoming state unchanged, and rather return a new object as demonstrated here.
+Since C# doesn't have as good support for dealing with immutable types as F# does, breaking up the reducers is a decent way to handle it. It's good practice to leave the incoming state unchanged, and rather return a new object as demonstrated here.
 
 ### F#
 
@@ -231,7 +231,7 @@ You can also dispatch actions from C# code blocks, such as in `OnInit()` methods
 
 ### C#
 
-None of the methods we have seen so far have been `async`. How do we handle asynchronous tasks such as loading data from a backend? By using action creators. They are called this because they can dispatch several actions during the course of a long-running operation. Here's an example:
+None of the methods we have seen so far have been `async`. How do we handle asynchronous tasks such as loading data from a backend? By using action creators. They are called that because they can dispatch several actions during the course of a long-running operation. Here's an example:
 
 ```csharp
 public static class ActionCreators
@@ -254,7 +254,7 @@ public static class ActionCreators
 }
 ```
 
-You can dispatch this operation from a component like this:
+You can dispatch the operation from a component:
 
 ```csharp
 @inherits MyAppComponent
@@ -272,7 +272,7 @@ You can dispatch this operation from a component like this:
 
 ### F#
 
-If you prefer to keep your F# code pure, and just use it to manage your types, actions and reducers, you can certainly keep the action creators in C#. But you can also implement them in F# like this:
+If you prefer to keep your F# code pure, and just use it to manage your types, actions and reducers, you can certainly keep the action creators in C#. But you can also implement them in F#:
 
 ```fsharp
 module ActionCreators =
@@ -292,7 +292,7 @@ module ActionCreators =
         AsyncActionsCreator<MyModel, MyMsg>t
 ```
 
-The `task` computation expression requires the NuGet package `TaskBuilder.fs`. The F# code requires some casting trickery and is arguably not as nice as the C# counterpart. If anybody knows how to clean this up a little, please open an issue or submit a PR.
+The `task` computation expression requires the NuGet package `TaskBuilder.fs`. The F# code requires some casting trickery and is arguably not as nice as the C# counterpart. If anybody knows how to clean it up a little, please open an issue or submit a PR.
 
 ## Contributing
 

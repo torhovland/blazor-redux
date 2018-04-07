@@ -32,8 +32,6 @@ module MyFuncs =
             | ClearWeather -> { state with Forecasts = None }
             | ReceiveWeather r -> { state with Forecasts = Some r }
 
-    let InitStore = new Store<MyModel, MyMsg>(Reducer<MyModel, MyMsg>MyReducer, { Count = 0; Forecasts = None })
-
 module ActionCreators =
     open System.Net.Http
     open System.Threading.Tasks

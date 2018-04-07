@@ -1,4 +1,5 @@
-﻿using FSharpLib;
+﻿using BlazorRedux;
+using FSharpLib;
 using Microsoft.AspNetCore.Blazor.Browser.Rendering;
 using Microsoft.AspNetCore.Blazor.Browser.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +12,10 @@ namespace FSharp
         {
             var serviceProvider = new BrowserServiceProvider(configure =>
             {
-                configure.AddSingleton(MyFuncs.InitStore);
+                configure.AddSingleton(
+                    new Store<MyModel, MyMsg>(
+                        MyFuncs.MyReducer, 
+                        new MyModel(0, null)));
             });
 
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");

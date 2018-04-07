@@ -3,13 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Blazor-Redux</PackageId>
-    <PackageVersion>0.0.1</PackageVersion>
+    <PackageVersion>0.0.2</PackageVersion>
     <Authors>Tor Hovland</Authors>
-    <Description>Type-safe state management (like Elm and Redux) for Blazor.</Description>
+    <Description>Type-safe state management (like Redux and Elm) for Blazor.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
+    <PackageReleaseNotes>Copied a lot from Redux.NET and implemented F# support.</PackageReleaseNotes>
     <Copyright>Copyright 2018 (c) Tor Hovland. All rights reserved.</Copyright>
-    <PackageTags>blazor state redux elm</PackageTags>
+    <PackageTags>blazor state redux elm fsharp</PackageTags>
     <PackageProjectUrl>https://github.com/torhovland/blazor-redux</PackageProjectUrl>
     <RepositoryUrl>https://github.com/torhovland/blazor-redux</RepositoryUrl>
     <LicenseUrl>https://github.com/torhovland/blazor-redux/blob/master/LICENSE</LicenseUrl>

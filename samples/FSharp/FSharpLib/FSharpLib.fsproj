@@ -10,7 +10,10 @@
 
   <ItemGroup>
     <PackageReference Include="TaskBuilder.fs" Version="1.1.1" />
-    <ProjectReference Include="..\..\..\src\BlazorReduxFS\BlazorReduxFS.fsproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\BlazorRedux\BlazorRedux.csproj" />
   </ItemGroup>
 
 </Project>

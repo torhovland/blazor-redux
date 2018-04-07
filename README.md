@@ -1,5 +1,7 @@
 # Blazor Redux
 
+[![NuGet](https://img.shields.io/nuget/v/Blazor-Redux.svg?style=for-the-badge)](https://www.nuget.org/packages/Blazor-Redux/)
+
 This library offers [Redux](https://redux.js.org)-style state management for [Blazor](https://github.com/aspnet/Blazor), with support for both C# and F#. The implementation is based on [Redux.NET](https://github.com/GuillaumeSalles/redux.NET).
 
 The combination of Blazor and Redux becomes an incredibly compelling platform for frontend development&mdash;more compelling than any other alternative, if you ask me:

@@ -10,8 +10,8 @@ http://www.apache.org/licenses/LICENSE-2.0
 
 ### Blazor
 
-Copyright (c) 2018 .NET Foundation and Contributors
-https://github.com/aspnet/Blazor
+- Copyright (c) 2018 .NET Foundation and Contributors
+- https://github.com/aspnet/Blazor
 
 ## The MIT License
 
@@ -20,8 +20,8 @@ https://opensource.org/licenses/MIT
 
 ### Redux.NET
 
-Guillaume Salles
-https://github.com/GuillaumeSalles/redux.NET
+- Guillaume Salles
+- https://github.com/GuillaumeSalles/redux.NET
 
 ## CC0 1.0 Universal
 
@@ -30,5 +30,5 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
 ### TaskBuilder.fs
 
-Robert Peele
-https://github.com/rspeele/TaskBuilder.fs
+- Robert Peele
+- https://github.com/rspeele/TaskBuilder.fs

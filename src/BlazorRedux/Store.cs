@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BlazorRedux
@@ -12,9 +13,15 @@ namespace BlazorRedux
         {
             _reducer = reducer;
             State = initialState;
+            History = new List<HistoricEntry<TState, TAction>>
+            {
+                new HistoricEntry<TState, TAction>(State)
+            };
         }
 
         public TState State { get; private set; }
+
+        public IList<HistoricEntry<TState, TAction>> History { get; }
 
         public event EventHandler Change;
 
@@ -29,6 +36,7 @@ namespace BlazorRedux
             lock (_syncRoot)
             {
                 State = _reducer(State, action);
+                History.Add(new HistoricEntry<TState, TAction>(State, action));
             }
 
             OnChange(null);

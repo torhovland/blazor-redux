@@ -240,20 +240,17 @@ None of the methods we have seen so far have been `async`. How do we handle asyn
 ```csharp
 public static class ActionCreators
 {
-    public static AsyncActionsCreator<MyModel, IAction> LoadWeather(HttpClient http)
+    public static async Task LoadWeather(Dispatcher<IAction> dispatch, HttpClient http)
     {
-        return async (dispatch, state) =>
+        dispatch(new ClearWeatherAction());
+
+        var forecasts = await http.GetJsonAsync<WeatherForecast[]>(
+            "/sample-data/weather.json");
+
+        dispatch(new ReceiveWeatherAction
         {
-            dispatch(new ClearWeatherAction());
-
-            var forecasts = await http.GetJsonAsync<WeatherForecast[]>(
-                "/sample-data/weather.json");
-
-            dispatch(new ReceiveWeatherAction
-            {
-                Forecasts = forecasts
-            });
-        };
+            Forecasts = forecasts
+        });
     }
 }
 ```
@@ -269,7 +266,7 @@ You can dispatch the operation from a component:
 {
     protected override async Task OnInitAsync()
     {
-        await DispatchAsync(ActionCreators.LoadWeather(Http));
+        await ActionCreators.LoadWeather(Store.Dispatch, Http);
     }
 }
 ```
@@ -281,22 +278,18 @@ If you prefer to keep your F# code pure, and just use it to manage your types, a
 ```fsharp
 module ActionCreators =
     open System.Net.Http
-    open System.Threading.Tasks
-    open FSharp.Control.Tasks
     open Microsoft.AspNetCore.Blazor
+    open FSharp.Control.Tasks
 
-    let LoadWeather (http: HttpClient) =
-        let t = fun (dispatch: Dispatcher<MyMsg>) state -> 
-            task {
-                dispatch.Invoke(MyMsg.ClearWeather) |> ignore
-                let! forecasts = http.GetJsonAsync<WeatherForecast[]>("/sample-data/weather.json") |> Async.AwaitTask
-                dispatch.Invoke(MyMsg.ReceiveWeather forecasts) |> ignore
-            } :> Task
-
-        AsyncActionsCreator<MyModel, MyMsg>t
+    let LoadWeather (dispatch: Dispatcher<MyMsg>, http: HttpClient) =
+        task {
+            dispatch.Invoke(MyMsg.ClearWeather) |> ignore
+            let! forecasts = http.GetJsonAsync<WeatherForecast[]>("/sample-data/weather.json") |> Async.AwaitTask
+            dispatch.Invoke(MyMsg.ReceiveWeather forecasts) |> ignore
+        }
 ```
 
-The `task` computation expression requires the NuGet package `TaskBuilder.fs`. The F# code requires some casting trickery and is arguably not as nice as the C# counterpart. If anybody knows how to clean it up a little, please open an issue or submit a PR.
+The `task` computation expression requires the NuGet package `TaskBuilder.fs`.
 
 ## Contributing
 

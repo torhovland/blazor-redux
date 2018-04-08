@@ -42,10 +42,5 @@ namespace BlazorRedux
             OnChange(null);
             return action;
         }
-
-        public Task DispatchAsync(AsyncActionsCreator<TState, TAction> actionsCreator)
-        {
-            return actionsCreator(Dispatch, State);
-        }
     }
 }

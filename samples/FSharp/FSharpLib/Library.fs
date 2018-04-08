@@ -34,16 +34,12 @@ module MyFuncs =
 
 module ActionCreators =
     open System.Net.Http
-    open System.Threading.Tasks
     open FSharp.Control.Tasks
     open Microsoft.AspNetCore.Blazor
 
-    let LoadWeather (http: HttpClient) =
-        let t = fun (dispatch: Dispatcher<MyMsg>) state -> 
-            task {
-                dispatch.Invoke(MyMsg.ClearWeather) |> ignore
-                let! forecasts = http.GetJsonAsync<WeatherForecast[]>("/sample-data/weather.json") |> Async.AwaitTask
-                dispatch.Invoke(MyMsg.ReceiveWeather forecasts) |> ignore
-            } :> Task
-
-        AsyncActionsCreator<MyModel, MyMsg>t
+    let LoadWeather (dispatch: Dispatcher<MyMsg>, http: HttpClient) =
+        task {
+            dispatch.Invoke(MyMsg.ClearWeather) |> ignore
+            let! forecasts = http.GetJsonAsync<WeatherForecast[]>("/sample-data/weather.json") |> Async.AwaitTask
+            dispatch.Invoke(MyMsg.ReceiveWeather forecasts) |> ignore
+        }

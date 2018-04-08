@@ -12,6 +12,6 @@
 {
     protected override async Task OnInitAsync()
     {
-        await DispatchAsync(ActionCreators.LoadWeather(Http));
+        await ActionCreators.LoadWeather(Store.Dispatch, Http);
     }
 }

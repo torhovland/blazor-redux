@@ -1,25 +1,23 @@
 ﻿using System.Net.Http;
-using BlazorRedux;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Blazor;
+using BlazorRedux;
 
 namespace BlazorStandalone
 {
     public static class ActionCreators
     {
-        public static AsyncActionsCreator<MyModel, IAction> LoadWeather(HttpClient http)
+        public static async Task LoadWeather(Dispatcher<IAction> dispatch, HttpClient http)
         {
-            return async (dispatch, state) =>
+            dispatch(new ClearWeatherAction());
+
+            var forecasts = await http.GetJsonAsync<WeatherForecast[]>(
+                "/sample-data/weather.json");
+
+            dispatch(new ReceiveWeatherAction
             {
-                dispatch(new ClearWeatherAction());
-
-                var forecasts = await http.GetJsonAsync<WeatherForecast[]>(
-                    "/sample-data/weather.json");
-
-                dispatch(new ReceiveWeatherAction
-                {
-                    Forecasts = forecasts
-                });
-            };
+                Forecasts = forecasts
+            });
         }
     }
 }

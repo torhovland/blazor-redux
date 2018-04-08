@@ -29,10 +29,5 @@ namespace BlazorRedux
         {
             Store.Dispatch(action);
         }
-
-        public Task DispatchAsync(AsyncActionsCreator<TState, TAction> actionsCreator)
-        {
-            return Store.DispatchAsync(actionsCreator);
-        }
     }
 }

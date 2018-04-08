@@ -1,17 +1,17 @@
-﻿using Microsoft.AspNetCore.Blazor.Browser.Rendering;
+﻿using BlazorRedux;
+using Microsoft.AspNetCore.Blazor.Browser.Rendering;
 using Microsoft.AspNetCore.Blazor.Browser.Services;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace BlazorHosted.Client
 {
     public class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
-            var serviceProvider = new BrowserServiceProvider(services =>
+            var serviceProvider = new BrowserServiceProvider(configure =>
             {
-                // Add any custom services here
+                configure.AddSingleton(new Store<MyModel, IAction>(Reducers.MainReducer, new MyModel()));
             });
 
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");

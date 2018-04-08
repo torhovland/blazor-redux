@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Blazor;
+using Microsoft.AspNetCore.Blazor.RenderTree;
 
 namespace BlazorRedux
 {
@@ -22,7 +23,6 @@ namespace BlazorRedux
 @".redux-debugger {
     display: flex;
     flex-wrap: wrap;
-    border: 1px solid #9d9d9d;
 }
 
 .redux-debugger__historic-entry {
@@ -78,7 +78,7 @@ namespace BlazorRedux
 
                 builder.OpenElement(seq++, "div");
                 builder.AddAttribute(seq++, "class", "redux-debugger__action-details");
-                builder.AddContent(seq++, _selectedEntry?.Action?.ToString() ?? "No action selected.");
+                seq = RenderActionDetails(builder, seq, _selectedEntry);
                 builder.CloseElement(); // action-details
 
                 builder.CloseElement(); // redux-debugger
@@ -89,6 +89,23 @@ namespace BlazorRedux
         {
             _selectedEntry = entry;
             StateHasChanged();
+        }
+
+        int RenderActionDetails(RenderTreeBuilder builder, int seq, HistoricEntry<TModel, TAction> entry)
+        {
+            if (entry == null)
+            {
+                builder.AddContent(seq++, "No entry selected");
+                return seq;
+            }
+
+            var action = entry.Action;
+
+            builder.OpenElement(seq++, "pre");
+            builder.AddContent(seq++, entry.State.ToString());
+            builder.CloseElement();
+
+            return seq;
         }
     }
 }

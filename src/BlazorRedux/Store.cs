@@ -42,5 +42,15 @@ namespace BlazorRedux
             OnChange(null);
             return action;
         }
+
+        public void TimeTravel(TState state)
+        {
+            lock (_syncRoot)
+            {
+                State = state;
+            }
+
+            OnChange(null);
+        }
     }
 }

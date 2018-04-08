@@ -88,7 +88,7 @@ namespace BlazorRedux
         void SelectEntry(HistoricEntry<TModel, TAction> entry)
         {
             _selectedEntry = entry;
-            StateHasChanged();
+            Store.TimeTravel(entry.State);
         }
 
         int RenderActionDetails(RenderTreeBuilder builder, int seq, HistoricEntry<TModel, TAction> entry)

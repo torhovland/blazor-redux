@@ -35,6 +35,8 @@ namespace BlazorRedux
             lock (_syncRoot)
             {
                 State = _reducer(State, action);
+                Console.WriteLine("Calling DevTools here.");
+                DevToolsInterop.Log(action.ToString(), State.ToString());
                 History.Add(new HistoricEntry<TState, TAction>(State, action));
             }
 

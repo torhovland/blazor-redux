@@ -13,6 +13,13 @@ namespace BlazorRedux
             builder.OpenElement(seq++, "script");
             builder.AddContent(seq++,
 @"(function () {
+Blazor.registerFunction('log', (action, state) => {
+        console.log(action);
+        console.log(state);
+        window.devTools.send(action, state);
+        return true;
+    });
+
 var config = { name: 'Blazor Redux' }; 
 var extension = window.__REDUX_DEVTOOLS_EXTENSION__;
 
@@ -41,6 +48,9 @@ devTools.init({ value: 'initial state' });
 devTools.send('change state', { value: 'state changed' });
 devTools.error('Foo Bar error');
 devTools.send('change state', { value: 'state changed 2' });
+
+const devToolsReady = Blazor.platform.findMethod('BlazorRedux', 'BlazorRedux', 'DevToolsInterop', 'DevToolsReady');
+Blazor.platform.callMethod(devToolsReady, null, []);
 }());");
 
             builder.CloseElement();

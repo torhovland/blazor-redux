@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Blazor;
 
 namespace BlazorRedux
 {
@@ -36,7 +37,7 @@ namespace BlazorRedux
             {
                 State = _reducer(State, action);
                 Console.WriteLine("Calling DevTools here.");
-                DevToolsInterop.Log(action.ToString(), State.ToString());
+                DevToolsInterop.Log(action.ToString(), JsonUtil.Serialize(State));
                 History.Add(new HistoricEntry<TState, TAction>(State, action));
             }
 

@@ -99,8 +99,6 @@ namespace BlazorRedux
                 return seq;
             }
 
-            var action = entry.Action;
-
             builder.OpenElement(seq++, "pre");
             builder.AddContent(seq++, entry.State.ToString());
             builder.CloseElement();

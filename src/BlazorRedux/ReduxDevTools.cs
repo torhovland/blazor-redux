@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Blazor.Components;
+﻿using Microsoft.AspNetCore.Blazor.Components;
 using Microsoft.AspNetCore.Blazor.RenderTree;
 
 namespace BlazorRedux
@@ -12,7 +11,38 @@ namespace BlazorRedux
             var seq = 0;
 
             builder.OpenElement(seq++, "script");
-            builder.AddContent(seq++, @"console.log('Connecting with Redux DevTools');");
+            builder.AddContent(seq++,
+@"(function () {
+var config = { name: 'Blazor Redux' }; 
+var extension = window.__REDUX_DEVTOOLS_EXTENSION__;
+
+if (!extension) {
+    console.log('Redux DevTools not installed.');
+    return;
+}
+
+var devTools = extension.connect(config);
+
+if (!devTools) {
+    console.log('Unable to connect to Redux DevTools.');
+    return;
+}
+
+devTools.subscribe((message) => {
+    if (message.type === 'DISPATCH' && message.state) {
+        console.log('DevTools requested to change the state to ', message.state);
+    }
+});
+
+window.devTools = devTools;
+console.log('Connected with Redux DevTools');
+
+devTools.init({ value: 'initial state' });
+devTools.send('change state', { value: 'state changed' });
+devTools.error('Foo Bar error');
+devTools.send('change state', { value: 'state changed 2' });
+}());");
+
             builder.CloseElement();
         }
     }

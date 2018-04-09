@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Blazor.Components;
 
 namespace BlazorRedux
@@ -9,6 +10,8 @@ namespace BlazorRedux
 
         public TState State => Store.State;
 
+        public RenderFragment ReduxDevTools;
+
         public void Dispose()
         {
             Store.Change -= OnChangeHandler;
@@ -17,6 +20,13 @@ namespace BlazorRedux
         protected override void OnInit()
         {
             Store.Change += OnChangeHandler;
+
+            ReduxDevTools = builder =>
+            {
+                var seq = 0;
+                builder.OpenComponent<ReduxDevTools>(seq);
+                builder.CloseComponent();
+            };
         }
 
         private void OnChangeHandler(object sender, EventArgs e)

@@ -13,10 +13,21 @@ namespace BlazorRedux
         {
             _reducer = reducer;
             State = initialState;
+
+            DevToolsInterop.TimeTravel += OnDevToolsTimeTravel;
+
             History = new List<HistoricEntry<TState, TAction>>
             {
                 new HistoricEntry<TState, TAction>(State)
             };
+        }
+
+        private void OnDevToolsTimeTravel(object sender, StringEventArgs e)
+        {
+            Console.WriteLine("Time travel event handler receiving:");
+            Console.WriteLine(e.String);
+            var state = JsonUtil.Deserialize<TState>(e.String);
+            TimeTravel(state);
         }
 
         public TState State { get; private set; }

@@ -37,7 +37,7 @@ if (!devTools) {
 devTools.subscribe((message) => {
     if (message.type === 'DISPATCH' && message.state) {
         console.log('DevTools requested to change the state to ', message.state);
-        const timeTravel = Blazor.platform.findMethod('BlazorRedux', 'BlazorRedux', 'DevToolsInterop', 'TimeTravel');
+        const timeTravel = Blazor.platform.findMethod('BlazorRedux', 'BlazorRedux', 'DevToolsInterop', 'TimeTravelFromJs');
         Blazor.platform.callMethod(timeTravel, null, [ Blazor.platform.toDotNetString(message.state) ]);
     }
 });

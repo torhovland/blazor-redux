@@ -11,6 +11,14 @@ namespace BlazorRedux
         private static bool _isReady;
         private static readonly Queue<Tuple<string, string>> Q = new Queue<Tuple<string, string>>();
 
+        public static event StringEventHandler TimeTravel;
+
+        private static void OnTimeTravel(StringEventArgs e)
+        {
+            var handler = TimeTravel;
+            handler?.Invoke(null, e);
+        }
+
         public static void DevToolsReady()
         {
             lock (SyncRoot)
@@ -26,10 +34,11 @@ namespace BlazorRedux
             Console.WriteLine("DevTools ready.");
         }
 
-        public static void TimeTravel(string state)
+        public static void TimeTravelFromJs(string state)
         {
             Console.WriteLine("Received state from JS:");
             Console.WriteLine(state);
+            OnTimeTravel(new StringEventArgs(state));
         }
 
         public static void Log(string action, string state)

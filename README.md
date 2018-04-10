@@ -2,7 +2,7 @@
 
 [![NuGet](https://img.shields.io/nuget/v/Blazor-Redux.svg?style=for-the-badge)](https://www.nuget.org/packages/Blazor-Redux/)
 
-![Time-traveling debugger](images/debugger.gif)
+![Time-traveling debugging with Redux DevTools](images/devtools.gif)
 
 This library offers [Redux](https://redux.js.org)-style state management for [Blazor](https://github.com/aspnet/Blazor), with support for both C# and F#. The implementation is based on [Redux.NET](https://github.com/GuillaumeSalles/redux.NET).
 

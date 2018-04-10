@@ -26,6 +26,12 @@ namespace BlazorRedux
             Console.WriteLine("DevTools ready.");
         }
 
+        public static void TimeTravel(string state)
+        {
+            Console.WriteLine("Received state from JS:");
+            Console.WriteLine(state);
+        }
+
         public static void Log(string action, string state)
         {
             if (!_isReady)

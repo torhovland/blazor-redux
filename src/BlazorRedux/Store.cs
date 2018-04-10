@@ -7,13 +7,16 @@ namespace BlazorRedux
     public class Store<TState, TAction> : IDisposable
     {
         private readonly Reducer<TState, TAction> _reducer;
+        private readonly TState _initialState;
         private readonly object _syncRoot = new object();
 
         public Store(Reducer<TState, TAction> reducer, TState initialState = default(TState))
         {
             _reducer = reducer;
+            _initialState = initialState;
             State = initialState;
 
+            DevToolsInterop.Reset += OnDevToolsReset;
             DevToolsInterop.TimeTravel += OnDevToolsTimeTravel;
 
             DevToolsInterop.Log("initial", JsonUtil.Serialize(State));
@@ -26,7 +29,14 @@ namespace BlazorRedux
 
         public void Dispose()
         {
+            DevToolsInterop.Reset -= OnDevToolsReset;
             DevToolsInterop.TimeTravel -= OnDevToolsTimeTravel;
+        }
+
+        private void OnDevToolsReset(object sender, EventArgs e)
+        {
+            var state = _initialState;
+            TimeTravel(state);
         }
 
         private void OnDevToolsTimeTravel(object sender, StringEventArgs e)

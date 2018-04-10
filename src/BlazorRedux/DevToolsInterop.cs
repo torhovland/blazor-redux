@@ -11,7 +11,14 @@ namespace BlazorRedux
         private static bool _isReady;
         private static readonly Queue<Tuple<string, string>> Q = new Queue<Tuple<string, string>>();
 
+        public static event EventHandler Reset;
         public static event StringEventHandler TimeTravel;
+
+        private static void OnReset(EventArgs e)
+        {
+            var handler = Reset;
+            handler?.Invoke(null, e);
+        }
 
         private static void OnTimeTravel(StringEventArgs e)
         {
@@ -31,6 +38,11 @@ namespace BlazorRedux
             }
 
             _isReady = true;
+        }
+
+        public static void DevToolsReset()
+        {
+            OnReset(new EventArgs());
         }
 
         public static void TimeTravelFromJs(string state)

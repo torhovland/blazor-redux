@@ -291,6 +291,20 @@ module ActionCreators =
 
 The `task` computation expression requires the NuGet package `TaskBuilder.fs`.
 
+## Redux DevTools
+
+Using the Redux DevTools, you can monitor all actions and state changes going on in your app, time travel to any state in the history, save and load state, and reset the application state.
+
+The DevTools will also take care of importing the current state whenever you reload your app. This is similar to Hot Module Replacement, where you can make changes to the app and have the new version automatically repopulate the application state. This is very productive when working on a part of your app that requires a lot of actions in order to get to.
+
+To connect with the Redux DevTools, all you have to do is to add
+
+```
+@ReduxDevTools
+```
+
+somewhere, such as in the header of `App.cshtml`.
+
 ## Contributing
 
 Blazor Redux is at an experimental stage, and you should expect breaking changes. But I'd be very interested in discussing the design and potential features. Please open an issue if you have any particular topic in mind.

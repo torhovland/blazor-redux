@@ -16,6 +16,8 @@ namespace BlazorRedux
 
             DevToolsInterop.TimeTravel += OnDevToolsTimeTravel;
 
+            DevToolsInterop.Log("initial", JsonUtil.Serialize(State));
+
             History = new List<HistoricEntry<TState, TAction>>
             {
                 new HistoricEntry<TState, TAction>(State)

@@ -14,8 +14,13 @@ namespace BlazorRedux
             builder.AddContent(seq++,
 @"(function () {
 Blazor.registerFunction('log', (action, state) => {
-    var json = JSON.parse(state);    
-    window.devTools.send(action, json);
+    var json = JSON.parse(state);
+
+    if (action === 'initial')
+        window.devTools.init(json);
+    else
+        window.devTools.send(action, json);
+
     return true;
 });
 
@@ -43,8 +48,6 @@ devTools.subscribe((message) => {
 
 window.devTools = devTools;
 console.log('Connected with Redux DevTools.');
-
-devTools.init({ value: 'initial state' });
 
 const devToolsReady = Blazor.platform.findMethod('BlazorRedux', 'BlazorRedux', 'DevToolsInterop', 'DevToolsReady');
 Blazor.platform.callMethod(devToolsReady, null, []);

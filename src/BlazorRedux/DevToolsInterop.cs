@@ -31,13 +31,10 @@ namespace BlazorRedux
             }
 
             _isReady = true;
-            Console.WriteLine("DevTools ready.");
         }
 
         public static void TimeTravelFromJs(string state)
         {
-            Console.WriteLine("Received state from JS:");
-            Console.WriteLine(state);
             OnTimeTravel(new StringEventArgs(state));
         }
 
@@ -58,7 +55,6 @@ namespace BlazorRedux
 
         static void LogToJs(string action, string state)
         {
-            Console.WriteLine($"Submitting {action} to JS.");
             RegisteredFunction.Invoke<bool>("log", action, state);
         }
     }

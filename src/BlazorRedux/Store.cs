@@ -29,8 +29,6 @@ namespace BlazorRedux
 
         private void OnDevToolsTimeTravel(object sender, StringEventArgs e)
         {
-            Console.WriteLine("Time travel event handler receiving:");
-            Console.WriteLine(e.String);
             var state = JsonUtil.Deserialize<TState>(e.String);
             TimeTravel(state);
         }
@@ -52,7 +50,6 @@ namespace BlazorRedux
             lock (_syncRoot)
             {
                 State = _reducer(State, action);
-                Console.WriteLine("Calling DevTools here.");
                 DevToolsInterop.Log(action.ToString(), JsonUtil.Serialize(State));
                 History.Add(new HistoricEntry<TState, TAction>(State, action));
             }

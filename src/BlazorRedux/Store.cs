@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Blazor;
 
 namespace BlazorRedux
 {
-    public class Store<TState, TAction>
+    public class Store<TState, TAction> : IDisposable
     {
         private readonly Reducer<TState, TAction> _reducer;
         private readonly object _syncRoot = new object();
@@ -20,6 +20,11 @@ namespace BlazorRedux
             {
                 new HistoricEntry<TState, TAction>(State)
             };
+        }
+
+        public void Dispose()
+        {
+            DevToolsInterop.TimeTravel -= OnDevToolsTimeTravel;
         }
 
         private void OnDevToolsTimeTravel(object sender, StringEventArgs e)

@@ -11,6 +11,7 @@ type WeatherForecast() =
 
 type MyModel =
     {
+        Location: string;
         Count: int;
         Forecasts: WeatherForecast[] option;
     }
@@ -25,6 +26,11 @@ type MyAppComponent() =
     inherit ReduxComponent<MyModel, MyMsg>()
 
 module MyFuncs =
+    let LocationReducer state (action: LocationAction) =
+        match action with
+            | :? NewLocationAction as a ->  { state with Location = a.Location }
+            | _ -> state
+
     let MyReducer state action =
         match action with
             | IncrementByOne -> { state with Count = state.Count + 1 }

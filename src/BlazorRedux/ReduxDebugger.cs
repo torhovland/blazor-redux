@@ -5,7 +5,7 @@ namespace BlazorRedux
 {
     public class ReduxDebugger<TModel, TAction> : ReduxComponent<TModel, TAction>
     {
-        private HistoricEntry<TModel, TAction> _selectedEntry;
+        private HistoricEntry<TModel, object> _selectedEntry;
 
         public RenderFragment Debugger;
         
@@ -85,13 +85,13 @@ namespace BlazorRedux
             };
         }
 
-        void SelectEntry(HistoricEntry<TModel, TAction> entry)
+        void SelectEntry(HistoricEntry<TModel, object> entry)
         {
             _selectedEntry = entry;
             Store.TimeTravel(entry.State);
         }
 
-        int RenderActionDetails(RenderTreeBuilder builder, int seq, HistoricEntry<TModel, TAction> entry)
+        int RenderActionDetails(RenderTreeBuilder builder, int seq, HistoricEntry<TModel, object> entry)
         {
             if (entry == null)
             {

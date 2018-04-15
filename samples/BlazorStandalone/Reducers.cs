@@ -5,10 +5,25 @@ namespace BlazorStandalone
 {
     public static class Reducers
     {
+        public static MyModel LocationReducer(MyModel state, LocationAction action)
+        {
+            var newState = MainReducer(state, null);
+
+            switch (action)
+            {
+                case NewLocationAction a:
+                    newState.Location = a.Location;
+                    break;
+            }
+
+            return newState;
+        }
+
         public static MyModel MainReducer(MyModel state, IAction action)
         {
             return new MyModel
             {
+                Location = state.Location,
                 Count = CountReducer(state.Count, action),
                 Forecasts = ForecastsReducer(state.Forecasts, action)
             };

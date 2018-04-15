@@ -14,8 +14,9 @@ namespace FSharp
             {
                 configure.AddSingleton(
                     new Store<MyModel, MyMsg>(
+                        MyFuncs.LocationReducer, 
                         MyFuncs.MyReducer, 
-                        new MyModel(0, null)));
+                        new MyModel("", 0, null)));
             });
 
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");

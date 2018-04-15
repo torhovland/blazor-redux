@@ -26,17 +26,20 @@ type MyAppComponent() =
     inherit ReduxComponent<MyModel, MyMsg>()
 
 module MyFuncs =
-    let LocationReducer state (action: LocationAction) =
-        match action with
-            | :? NewLocationAction as a ->  { state with Location = a.Location }
-            | _ -> state
-
     let MyReducer state action =
         match action with
             | IncrementByOne -> { state with Count = state.Count + 1 }
             | IncrementByValue n -> { state with Count = state.Count + n }
             | ClearWeather -> { state with Forecasts = None }
             | ReceiveWeather r -> { state with Forecasts = Some r }
+
+    let LocationReducer state (action: LocationAction) =
+        match action with
+            | :? NewLocationAction as a ->  { state with Location = a.Location }
+            | _ -> state
+
+    let GetLocation state =
+        state.Location
 
 module ActionCreators =
     open System.Net.Http

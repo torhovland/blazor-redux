@@ -14,8 +14,9 @@ namespace FSharp
             {
                 configure.AddSingleton(
                     new Store<MyModel, MyMsg>(
-                        MyFuncs.LocationReducer, 
                         MyFuncs.MyReducer, 
+                        MyFuncs.LocationReducer, 
+                        MyFuncs.GetLocation, 
                         new MyModel("", 0, null)));
             });
 

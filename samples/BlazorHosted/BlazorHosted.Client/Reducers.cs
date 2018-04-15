@@ -6,20 +6,6 @@ namespace BlazorHosted.Client
 {
     public static class Reducers
     {
-        public static MyModel LocationReducer(MyModel state, LocationAction action)
-        {
-            var newState = MainReducer(state, null);
-
-            switch (action)
-            {
-                case NewLocationAction a:
-                    newState.Location = a.Location;
-                    break;
-            }
-
-            return newState;
-        }
-
         public static MyModel MainReducer(MyModel state, IAction action)
         {
             return new MyModel
@@ -55,6 +41,25 @@ namespace BlazorHosted.Client
                 default:
                     return forecasts;
             }
+        }
+
+        public static MyModel LocationReducer(MyModel state, LocationAction action)
+        {
+            var newState = MainReducer(state, null);
+
+            switch (action)
+            {
+                case NewLocationAction a:
+                    newState.Location = a.Location;
+                    break;
+            }
+
+            return newState;
+        }
+
+        public static string GetLocation(MyModel state)
+        {
+            return state.Location;
         }
     }
 }

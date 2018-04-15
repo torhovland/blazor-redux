@@ -10,8 +10,10 @@ namespace BlazorRedux
     {
         private readonly Reducer<TState, TAction> _mainReducer;
         private readonly Reducer<TState, LocationAction> _locationReducer;
+        private readonly Func<TState, string> _getLocation;
         private readonly TState _initialState;
         private IUriHelper _uriHelper = null;
+        private string currentLocation = null;
         private readonly object _syncRoot = new object();
 
         public TState State { get; private set; }
@@ -19,12 +21,14 @@ namespace BlazorRedux
         public event EventHandler Change;
 
         public Store(
-            Reducer<TState, LocationAction> locationReducer, 
             Reducer<TState, TAction> mainReducer, 
+            Reducer<TState, LocationAction> locationReducer, 
+            Func<TState, string> getLocation,
             TState initialState = default(TState))
         {
             _mainReducer = mainReducer;
             _locationReducer = locationReducer;
+            _getLocation = getLocation;
             _initialState = initialState;
             State = initialState;
 
@@ -85,6 +89,13 @@ namespace BlazorRedux
         {
             var handler = Change;
             handler?.Invoke(this, e);
+
+            var newLocation = _getLocation(State);
+            if (newLocation != currentLocation)
+            {
+                currentLocation = newLocation;
+                _uriHelper.NavigateTo(newLocation);
+            }
         }
 
         public TAction Dispatch(TAction action)

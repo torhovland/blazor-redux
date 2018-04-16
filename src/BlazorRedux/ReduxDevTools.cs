@@ -50,6 +50,10 @@ devTools.subscribe((message) => {
         const devToolsReady = Blazor.platform.findMethod('BlazorRedux', 'BlazorRedux', 'DevToolsInterop', 'DevToolsReady');
         Blazor.platform.callMethod(devToolsReady, null, []);
     }
+    else if (message.type === 'DISPATCH' && message.state) {
+        // Time-traveling
+        timeTravel(message.state);
+    }
     else if (message.type === 'DISPATCH' && message.payload) {
         var payload = message.payload;
 
@@ -69,10 +73,6 @@ devTools.subscribe((message) => {
             console.log('Unhandled payload from Redux DevTools:');
             console.log(payload);
         }
-    }
-    else if (message.type === 'DISPATCH' && message.state) {
-        // Time-traveling
-        timeTravel(message.state);
     }
     else {
         console.log('Unhandled message from Redux DevTools:');

@@ -15,7 +15,7 @@ namespace BlazorRedux
 @"(function () {
 function timeTravel(state) {
     const timeTravel = Blazor.platform.findMethod('BlazorRedux', 'BlazorRedux', 'DevToolsInterop', 'TimeTravelFromJs');
-    Blazor.platform.callMethod(timeTravel, null, [ Blazor.platform.toDotNetString(JSON.stringify(state)) ]);
+    Blazor.platform.callMethod(timeTravel, null, [ Blazor.platform.toDotNetString(state) ]);
 }
 
 Blazor.registerFunction('log', (action, state) => {

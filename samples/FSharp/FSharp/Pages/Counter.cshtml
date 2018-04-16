@@ -7,4 +7,4 @@
 
 <p>Current count: @State.Count</p>
 
-<button @onclick(() => Dispatch(MyMsg.NewIncrementByValue(3)))>Click me</button>
+<button onclick=@(() => Dispatch(MyMsg.NewIncrementByValue(3)))>Click me</button>

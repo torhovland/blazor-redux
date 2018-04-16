@@ -59,7 +59,7 @@ namespace BlazorRedux
                 {
                     builder.OpenElement(seq++, "div");
                     builder.AddAttribute(seq++, "class", "redux-debugger__historic-entry " + (entry == _selectedEntry ? "redux-debugger__historic-entry--selected" : ""));
-                    builder.AddAttribute(seq++, onclick(() => SelectEntry(entry)));
+                    builder.AddAttribute(seq++, "onclick", () => SelectEntry(entry));
 
                     builder.OpenElement(seq++, "div");
                     builder.AddAttribute(seq++, "class", "redux-debugger__historic-entry__action");

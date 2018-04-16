@@ -36,7 +36,7 @@ else
         </tbody>
     </table>
 
-    <button @onclick(async () => await ActionCreators.LoadWeather(Store.Dispatch, Http))>Reload weather</button>
+    <button onclick=@(async () => await ActionCreators.LoadWeather(Store.Dispatch, Http))>Reload weather</button>
 }
 
 <Counter />

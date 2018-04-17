@@ -72,9 +72,12 @@ namespace BlazorRedux
         {
             if (newAbsoluteUri == _currentLocation) return;
 
-            Console.WriteLine(newAbsoluteUri);
+            lock (_syncRoot)
+            {
+                _currentLocation = newAbsoluteUri;
+            }
+
             Dispatch(new NewLocationAction { Location = newAbsoluteUri });
-            _currentLocation = newAbsoluteUri;
         }
 
         private void OnDevToolsReset(object sender, EventArgs e)
@@ -95,11 +98,14 @@ namespace BlazorRedux
             handler?.Invoke(this, e);
 
             var newLocation = _getLocation(State);
-            if (newLocation != _currentLocation)
+            if (newLocation == _currentLocation) return;
+
+            lock (_syncRoot)
             {
                 _currentLocation = newLocation;
-                _uriHelper.NavigateTo(newLocation);
             }
+
+            _uriHelper.NavigateTo(newLocation);
         }
 
         public TAction Dispatch(TAction action)

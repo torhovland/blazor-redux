@@ -16,7 +16,7 @@ namespace FSharp
                     new Store<MyModel, MyMsg>(
                         MyFuncs.MyReducer, 
                         MyFuncs.LocationReducer, 
-                        MyFuncs.GetLocation, 
+                        (state) => state.Location,
                         new MyModel("", 0, null)));
             });
 

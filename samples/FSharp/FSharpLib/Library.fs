@@ -38,9 +38,6 @@ module MyFuncs =
             | :? NewLocationAction as a ->  { state with Location = a.Location }
             | _ -> state
 
-    let GetLocation state =
-        state.Location
-
 module ActionCreators =
     open System.Net.Http
     open FSharp.Control.Tasks

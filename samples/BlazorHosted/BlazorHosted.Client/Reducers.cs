@@ -56,10 +56,5 @@ namespace BlazorHosted.Client
 
             return newState;
         }
-
-        public static string GetLocation(MyModel state)
-        {
-            return state.Location;
-        }
     }
 }

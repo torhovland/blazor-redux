@@ -14,7 +14,7 @@ namespace BlazorStandalone
                 configure.AddSingleton(new Store<MyModel, IAction>(
                     Reducers.MainReducer, 
                     Reducers.LocationReducer, 
-                    Reducers.GetLocation, 
+                    (state) => state.Location,
                     new MyModel()));
             });
 

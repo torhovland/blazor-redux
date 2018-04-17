@@ -13,7 +13,7 @@ namespace BlazorRedux
         private readonly Func<TState, string> _getLocation;
         private readonly TState _initialState;
         private IUriHelper _uriHelper = null;
-        private string currentLocation = null;
+        private string _currentLocation = null;
         private readonly object _syncRoot = new object();
 
         public TState State { get; private set; }
@@ -51,11 +51,12 @@ namespace BlazorRedux
             {
                 _uriHelper = uriHelper;
                 _uriHelper.OnLocationChanged += OnLocationChanged;
-                Console.WriteLine("Store initialized.");
             }
 
             // TODO: Queue up any other actions, and let this apply to the initial state.
             Dispatch(new NewLocationAction { Location = _uriHelper.GetAbsoluteUri() });
+
+            Console.WriteLine("Store initialized.");
         }
 
         public void Dispose()
@@ -69,8 +70,11 @@ namespace BlazorRedux
 
         private void OnLocationChanged(object sender, string newAbsoluteUri)
         {
+            if (newAbsoluteUri == _currentLocation) return;
+
             Console.WriteLine(newAbsoluteUri);
             Dispatch(new NewLocationAction { Location = newAbsoluteUri });
+            _currentLocation = newAbsoluteUri;
         }
 
         private void OnDevToolsReset(object sender, EventArgs e)
@@ -91,9 +95,9 @@ namespace BlazorRedux
             handler?.Invoke(this, e);
 
             var newLocation = _getLocation(State);
-            if (newLocation != currentLocation)
+            if (newLocation != _currentLocation)
             {
-                currentLocation = newLocation;
+                _currentLocation = newLocation;
                 _uriHelper.NavigateTo(newLocation);
             }
         }

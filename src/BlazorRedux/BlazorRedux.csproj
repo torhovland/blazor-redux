@@ -3,11 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Blazor-Redux</PackageId>
-    <PackageVersion>0.0.3</PackageVersion>
+    <PackageVersion>0.0.4</PackageVersion>
     <Authors>Tor Hovland</Authors>
     <Description>Type-safe state management (like Redux and Elm) for Blazor.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Time-traveling debugging using Redux DevTools, and simplified action creators.</PackageReleaseNotes>
+    <PackageReleaseNotes>State-aware routing. Updated for Blazor 0.2.0.</PackageReleaseNotes>
     <Copyright>Copyright 2018 (c) Tor Hovland. All rights reserved.</Copyright>
     <PackageTags>blazor state redux elm fsharp</PackageTags>
     <PackageProjectUrl>https://github.com/torhovland/blazor-redux</PackageProjectUrl>

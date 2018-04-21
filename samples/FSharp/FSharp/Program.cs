@@ -17,7 +17,7 @@ namespace FSharp
                         MyFuncs.MyReducer, 
                         MyFuncs.LocationReducer, 
                         (state) => state.Location,
-                        new MyModel("", 0, null)));
+                        new MyModel()));
             });
 
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");

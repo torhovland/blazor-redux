@@ -18,7 +18,7 @@ type WeatherForecast() =
 type MyModel() =
     member val Location = "" with get, set
     member val Count = 0 with get, set
-    member val Forecasts: IEnumerable<WeatherForecast> = [] :> seq<WeatherForecast> with get, set
+    member val Forecasts: IEnumerable<WeatherForecast> = null with get, set
     member this.Clone() = this.MemberwiseClone() :?> MyModel
 
 type MyMsg =
@@ -44,7 +44,7 @@ module MyFuncs =
                 newState
             | ClearWeather ->
                 let newState = state.Clone()
-                newState.Forecasts <- []
+                newState.Forecasts <- null
                 newState
             | ReceiveWeather r ->
                 let newState = state.Clone()

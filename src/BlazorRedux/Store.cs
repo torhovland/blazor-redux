@@ -10,6 +10,8 @@ namespace BlazorRedux
         private readonly Reducer<TState, TAction> _mainReducer;
         private readonly Reducer<TState, LocationAction> _locationReducer;
         private readonly Func<TState, string> _getLocation;
+        private readonly Func<TState, string> _stateSerializer;
+        private readonly Func<string, TState> _stateDeserializer;
         private readonly TState _initialState;
         private IUriHelper _uriHelper;
         private string _currentLocation;
@@ -23,18 +25,22 @@ namespace BlazorRedux
             Reducer<TState, TAction> mainReducer, 
             Reducer<TState, LocationAction> locationReducer, 
             Func<TState, string> getLocation,
+            Func<TState, string> stateSerializer = null,
+            Func<string, TState> stateDeserializer = null,
             TState initialState = default(TState))
         {
             _mainReducer = mainReducer;
             _locationReducer = locationReducer;
             _getLocation = getLocation;
+            _stateSerializer = stateSerializer ?? (state => JsonUtil.Serialize(state));
+            _stateDeserializer = stateDeserializer ?? JsonUtil.Deserialize<TState>;
             _initialState = initialState;
             State = initialState;
 
             DevToolsInterop.Reset += OnDevToolsReset;
             DevToolsInterop.TimeTravel += OnDevToolsTimeTravel;
 
-            DevToolsInterop.Log("initial", JsonUtil.Serialize(State));
+            DevToolsInterop.Log("initial", _stateSerializer(State));
 
             History = new List<HistoricEntry<TState, object>>
             {
@@ -87,7 +93,7 @@ namespace BlazorRedux
 
         private void OnDevToolsTimeTravel(object sender, StringEventArgs e)
         {
-            var state = JsonUtil.Deserialize<TState>(e.String);
+            var state = _stateDeserializer(e.String);
             TimeTravel(state);
         }
 
@@ -112,7 +118,7 @@ namespace BlazorRedux
             lock (_syncRoot)
             {
                 State = _mainReducer(State, action);
-                DevToolsInterop.Log(action.ToString(), JsonUtil.Serialize(State));
+                DevToolsInterop.Log(action.ToString(), _stateSerializer(State));
                 History.Add(new HistoricEntry<TState, object>(State, action));
             }
 
@@ -125,7 +131,7 @@ namespace BlazorRedux
             lock (_syncRoot)
             {
                 State = _locationReducer(State, action);
-                DevToolsInterop.Log(action.ToString(), JsonUtil.Serialize(State));
+                DevToolsInterop.Log(action.ToString(), _stateSerializer(State));
                 History.Add(new HistoricEntry<TState, object>(State, action));
             }
 

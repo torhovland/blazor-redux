@@ -1,72 +1,102 @@
 namespace FSharpLib
 
 open System
+open Chiron
 open BlazorRedux
-open System.Collections.Generic
 
-type WeatherForecast() =
-    member val Date = DateTime.MinValue with get, set
-    member val TemperatureC = 0 with get, set
-    member val TemperatureF = 0 with get, set
-    member val Summary = "" with get, set
+// Currently need to help the JSON serialization required by Redux DevTools
+// using Chiron. It would be nice to have this totally automatic, but 
+// SimpleJson doesn't understand F# record types, and Mono on WebAssembly 
+// doesn't currently support Reflection.Emit, which Json.NET and some other
+// libraries depend on.
+type WeatherForecast =
+    { 
+        Date: DateTimeOffset
+        TemperatureC: int 
+        TemperatureF: int 
+        Summary: string 
+    }
 
-// It would be nice to be able to use F# record types here, but:
-// JsonUtil doesn't understand F# record types, and Mono on WebAssembly 
-// doesn't currently support Reflection.Emit, which denies us the use of
-// automatic JSON deserialization tools like Json.NET. We need the JSON
-// deserialization in order to receive state from Redux DevTools.
-type MyModel() =
-    member val Location = "" with get, set
-    member val Count = 0 with get, set
-    member val Forecasts: IEnumerable<WeatherForecast> = null with get, set
-    member this.Clone() = this.MemberwiseClone() :?> MyModel
+    static member FromJson (_: WeatherForecast) = json {
+        let! d = Json.read "Date"
+        let! c = Json.read "TemperatureC"
+        let! f = Json.read "TemperatureF"
+        let! s = Json.read "Summary"
+        return { Date = d; TemperatureC = c; TemperatureF = f; Summary = s }
+    }
+
+    static member ToJson (x: WeatherForecast) = json {
+        do! Json.write "Date" x.Date
+        do! Json.write "TemperatureC" x.TemperatureC
+        do! Json.write "TemperatureF" x.TemperatureF
+        do! Json.write "Summary" x.Summary
+    }
+
+type MyState =
+    { 
+        Location: string
+        Count: int 
+        Forecasts: WeatherForecast list option 
+    }
+
+    static member FromJson (_: MyState) = json {
+        let! l = Json.read "Location"
+        let! c = Json.read "Count"
+        let! f = Json.read "Forecasts"
+        return { Location = l; Count = c; Forecasts = f }
+    }
+
+    static member ToJson (x: MyState) = json {
+        do! Json.write "Location" x.Location
+        do! Json.write "Count" x.Count
+        do! Json.write "Forecasts" x.Forecasts
+    }
 
 type MyMsg =
     | IncrementByOne
     | IncrementByValue of n : int
     | ClearWeather
-    | ReceiveWeather of r : WeatherForecast[]
+    | ReceiveWeather of r : WeatherForecast list
 
 type MyAppComponent() =
-    inherit ReduxComponent<MyModel, MyMsg>()
+    inherit ReduxComponent<MyState, MyMsg>()
 
 module MyFuncs =
-    // These would have been nicer if it was possible to define MyModel as a record type.
-    let MyReducer (state: MyModel) action =
+    let MyReducer (state: MyState) action =
         match action with
-            | IncrementByOne -> 
-                let newState = state.Clone()
-                newState.Count <- newState.Count + 1
-                newState
-            | IncrementByValue n ->
-                let newState = state.Clone()
-                newState.Count <- newState.Count + n
-                newState
-            | ClearWeather ->
-                let newState = state.Clone()
-                newState.Forecasts <- null
-                newState
-            | ReceiveWeather r ->
-                let newState = state.Clone()
-                newState.Forecasts <- r
-                newState
+            | IncrementByOne -> { state with Count = state.Count + 1 }
+            | IncrementByValue n -> { state with Count = state.Count + n }
+            | ClearWeather -> { state with Forecasts = None }
+            | ReceiveWeather r -> { state with Forecasts = Some r }
 
-    let LocationReducer (state: MyModel) (action: LocationAction) =
+    let LocationReducer (state: MyState) (action: LocationAction) =
         match action with
-            | :? NewLocationAction as a ->
-                let newState = state.Clone()
-                newState.Location <- a.Location
-                newState
+            | :? NewLocationAction as a ->  { state with Location = a.Location }
             | _ -> state
+
+    let StateSerializer (state: MyState) =
+        state
+        |> Json.serialize
+        |> Json.format
+
+    let StateDeserializer str : MyState =
+        str
+        |> Json.parse
+        |> Json.deserialize
 
 module ActionCreators =
     open System.Net.Http
     open FSharp.Control.Tasks
-    open Microsoft.AspNetCore.Blazor
 
     let LoadWeather (dispatch: Dispatcher<MyMsg>, http: HttpClient) =
         task {
             dispatch.Invoke(MyMsg.ClearWeather) |> ignore
-            let! forecasts = http.GetJsonAsync<WeatherForecast[]>("/sample-data/weather.json") |> Async.AwaitTask
+
+            let! forecastString = http.GetStringAsync("/sample-data/weather.json") |> Async.AwaitTask
+            let forecasts: WeatherForecast list =
+                forecastString
+                |> Json.parse
+                |> Json.deserialize
+                
             dispatch.Invoke(MyMsg.ReceiveWeather forecasts) |> ignore
         }

@@ -13,11 +13,13 @@ namespace FSharp
             var serviceProvider = new BrowserServiceProvider(configure =>
             {
                 configure.AddSingleton(
-                    new Store<MyModel, MyMsg>(
+                    new Store<MyState, MyMsg>(
                         MyFuncs.MyReducer, 
                         MyFuncs.LocationReducer, 
                         (state) => state.Location,
-                        new MyModel()));
+                        MyFuncs.StateSerializer,
+                        MyFuncs.StateDeserializer,
+                        new MyState("", 0, null)));
             });
 
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");

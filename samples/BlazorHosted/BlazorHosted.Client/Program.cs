@@ -14,8 +14,7 @@ namespace BlazorHosted.Client
                 configure.AddSingleton(new Store<MyModel, IAction>(
                     Reducers.MainReducer, 
                     Reducers.LocationReducer, 
-                    (state) => state.Location,
-                    new MyModel()));
+                    state => state.Location));
             });
 
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");

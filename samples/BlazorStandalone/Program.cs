@@ -7,7 +7,7 @@ namespace BlazorStandalone
 {
     internal class Program
     {
-        private static void Main()
+        public static void Main()
         {
             var serviceProvider = new BrowserServiceProvider(configure =>
             {

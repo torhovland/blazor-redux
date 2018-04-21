@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Blazor;
-using Microsoft.AspNetCore.Blazor.Components;
 using Microsoft.AspNetCore.Blazor.Services;
 
 namespace BlazorRedux
@@ -12,8 +11,8 @@ namespace BlazorRedux
         private readonly Reducer<TState, LocationAction> _locationReducer;
         private readonly Func<TState, string> _getLocation;
         private readonly TState _initialState;
-        private IUriHelper _uriHelper = null;
-        private string _currentLocation = null;
+        private IUriHelper _uriHelper;
+        private string _currentLocation;
         private readonly object _syncRoot = new object();
 
         public TState State { get; private set; }
@@ -121,7 +120,7 @@ namespace BlazorRedux
             return action;
         }
 
-        LocationAction Dispatch(LocationAction action)
+        void Dispatch(LocationAction action)
         {
             lock (_syncRoot)
             {
@@ -131,7 +130,6 @@ namespace BlazorRedux
             }
 
             OnChange(null);
-            return action;
         }
 
         public void TimeTravel(TState state)

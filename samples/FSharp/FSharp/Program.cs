@@ -1,8 +1,7 @@
-﻿using BlazorRedux;
-using FSharpLib;
-using Microsoft.AspNetCore.Blazor.Browser.Rendering;
+﻿using Microsoft.AspNetCore.Blazor.Browser.Rendering;
 using Microsoft.AspNetCore.Blazor.Browser.Services;
-using Microsoft.Extensions.DependencyInjection;
+using BlazorRedux;
+using FSharpLib;
 
 namespace FSharp
 {
@@ -12,14 +11,15 @@ namespace FSharp
         {
             var serviceProvider = new BrowserServiceProvider(configure =>
             {
-                configure.AddSingleton(
-                    new Store<MyState, MyMsg>(
-                        MyFuncs.MyReducer, 
-                        MyFuncs.LocationReducer, 
-                        (state) => state.Location,
-                        MyFuncs.StateSerializer,
-                        MyFuncs.StateDeserializer,
-                        new MyState("", 0, null)));
+                configure.AddReduxStore<MyState, MyMsg>(options =>
+                {
+                    options.InitialState = new MyState("", 0, null);
+                    options.MainReducer = MyFuncs.MyReducer;
+                    options.LocationReducer = MyFuncs.LocationReducer;
+                    options.GetLocation = state => state.Location;
+                    options.StateSerializer = MyFuncs.StateSerializer;
+                    options.StateDeserializer = MyFuncs.StateDeserializer;
+                });
             });
 
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");

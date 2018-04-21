@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BlazorHosted.Shared;
 using BlazorRedux;
 
@@ -8,6 +9,9 @@ namespace BlazorHosted.Client
     {
         public static MyModel MainReducer(MyModel state, IAction action)
         {
+            if (state == null)
+                throw new ArgumentNullException(nameof(state));
+
             return new MyModel
             {
                 Location = state.Location,

@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Blazor.Services;
 
 namespace BlazorRedux
 {
     public class Store<TState, TAction> : IDisposable
     {
-        private readonly Reducer<TState, TAction> _mainReducer;
-        private readonly Reducer<TState, LocationAction> _locationReducer;
-        private readonly Func<TState, string> _getLocation;
-        private readonly Func<TState, string> _stateSerializer;
-        private readonly Func<string, TState> _stateDeserializer;
-        private readonly TState _initialState;
+        private readonly ReduxOptions<TState, TAction> _options;
         private IUriHelper _uriHelper;
         private string _currentLocation;
         private readonly object _syncRoot = new object();
@@ -21,26 +15,14 @@ namespace BlazorRedux
         public IList<HistoricEntry<TState, object>> History { get; }
         public event EventHandler Change;
 
-        public Store(
-            Reducer<TState, TAction> mainReducer, 
-            Reducer<TState, LocationAction> locationReducer, 
-            Func<TState, string> getLocation,
-            Func<TState, string> stateSerializer = null,
-            Func<string, TState> stateDeserializer = null,
-            TState initialState = default(TState))
+        public Store(ReduxOptions<TState, TAction> options)
         {
-            _mainReducer = mainReducer;
-            _locationReducer = locationReducer;
-            _getLocation = getLocation;
-            _stateSerializer = stateSerializer ?? (state => JsonUtil.Serialize(state));
-            _stateDeserializer = stateDeserializer ?? JsonUtil.Deserialize<TState>;
-            _initialState = initialState;
-            State = initialState;
+            _options = options;
+            State = options.InitialState;
 
             DevToolsInterop.Reset += OnDevToolsReset;
             DevToolsInterop.TimeTravel += OnDevToolsTimeTravel;
-
-            DevToolsInterop.Log("initial", _stateSerializer(State));
+            DevToolsInterop.Log("initial", _options.StateSerializer(State));
 
             History = new List<HistoricEntry<TState, object>>
             {
@@ -61,7 +43,7 @@ namespace BlazorRedux
             // TODO: Queue up any other actions, and let this apply to the initial state.
             Dispatch(new NewLocationAction { Location = _uriHelper.GetAbsoluteUri() });
 
-            Console.WriteLine("Store initialized.");
+            Console.WriteLine("Redux store initialized.");
         }
 
         public void Dispose()
@@ -87,13 +69,13 @@ namespace BlazorRedux
 
         private void OnDevToolsReset(object sender, EventArgs e)
         {
-            var state = _initialState;
+            var state = _options.InitialState;
             TimeTravel(state);
         }
 
         private void OnDevToolsTimeTravel(object sender, StringEventArgs e)
         {
-            var state = _stateDeserializer(e.String);
+            var state = _options.StateDeserializer(e.String);
             TimeTravel(state);
         }
 
@@ -102,8 +84,8 @@ namespace BlazorRedux
             var handler = Change;
             handler?.Invoke(this, e);
 
-            var newLocation = _getLocation(State);
-            if (newLocation == _currentLocation) return;
+            var newLocation = _options.GetLocation(State);
+            if (newLocation == _currentLocation || newLocation == null) return;
 
             lock (_syncRoot)
             {
@@ -113,25 +95,24 @@ namespace BlazorRedux
             _uriHelper.NavigateTo(newLocation);
         }
 
-        public TAction Dispatch(TAction action)
+        public void Dispatch(TAction action)
         {
             lock (_syncRoot)
             {
-                State = _mainReducer(State, action);
-                DevToolsInterop.Log(action.ToString(), _stateSerializer(State));
+                State = _options.MainReducer(State, action);
+                DevToolsInterop.Log(action.ToString(), _options.StateSerializer(State));
                 History.Add(new HistoricEntry<TState, object>(State, action));
             }
 
             OnChange(null);
-            return action;
         }
 
         void Dispatch(LocationAction action)
         {
             lock (_syncRoot)
             {
-                State = _locationReducer(State, action);
-                DevToolsInterop.Log(action.ToString(), _stateSerializer(State));
+                State = _options.LocationReducer(State, action);
+                DevToolsInterop.Log(action.ToString(), _options.StateSerializer(State));
                 History.Add(new HistoricEntry<TState, object>(State, action));
             }
 

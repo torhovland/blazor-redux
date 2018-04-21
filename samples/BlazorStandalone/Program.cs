@@ -1,7 +1,6 @@
 ﻿using BlazorRedux;
 using Microsoft.AspNetCore.Blazor.Browser.Rendering;
 using Microsoft.AspNetCore.Blazor.Browser.Services;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorStandalone
 {
@@ -11,10 +10,13 @@ namespace BlazorStandalone
         {
             var serviceProvider = new BrowserServiceProvider(configure =>
             {
-                configure.AddSingleton(new Store<MyModel, IAction>(
-                    Reducers.MainReducer, 
-                    Reducers.LocationReducer, 
-                    state => state.Location));
+                configure.AddReduxStore<MyModel, IAction>(options =>
+                {
+                    options.InitialState = new MyModel();
+                    options.MainReducer = Reducers.MainReducer;
+                    options.LocationReducer = Reducers.LocationReducer;
+                    options.GetLocation = state => state.Location;
+                });
             });
 
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");

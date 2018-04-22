@@ -12,7 +12,7 @@ namespace BlazorRedux
             StateDeserializer = JsonUtil.Deserialize<TState>;
         }
 
-        public Reducer<TState, IAction> LocationReducer { get; set; }
+        public Reducer<TState, NewLocationAction> LocationReducer { get; set; }
         public Func<TState, string> GetLocation { get; set; }
         public Func<TState, string> StateSerializer { get; set; }
         public Func<string, TState> StateDeserializer { get; set; }

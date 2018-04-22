@@ -46,7 +46,7 @@ namespace Minimal
             }
         }
 
-        public static MyState LocationReducer(MyState state, LocationAction action)
+        public static MyState LocationReducer(MyState state, IAction action)
         {
             var newState = RootReducer(state, null);
 

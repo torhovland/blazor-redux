@@ -69,10 +69,8 @@ module MyFuncs =
             | ClearWeather -> { state with Forecasts = None }
             | ReceiveWeather r -> { state with Forecasts = Some r }
 
-    let LocationReducer (state: MyState) (action: LocationAction) =
-        match action with
-            | :? NewLocationAction as a ->  { state with Location = a.Location }
-            | _ -> state
+    let LocationReducer (state: MyState) (action: NewLocationAction) =
+        { state with Location = action.Location }
 
     let StateSerializer (state: MyState) =
         state

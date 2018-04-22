@@ -10,13 +10,14 @@ The combination of Blazor and Redux becomes an incredibly compelling platform fo
 
 - Blazor uses .NET, thus comes with a strong type-system built-in, like [Elm](http://elm-lang.org), [Purescript](http://www.purescript.org), [OCaml](https://bucklescript.github.io), and to some degree [Typescript](https://www.typescriptlang.org).
 - With ASP.NET already such a viable option for the backend, this opens up for a very strong [isomorphic apps model](https://hackernoon.com/isomorphic-universal-boilerplate-react-redux-server-rendering-tutorial-example-webpack-compenent-6e22106ae285) with shared .NET code on the frontend and backend.
-- The Razor view engine combines the power of a templating engine with the familiarity of HTML, like [JSX](https://reactjs.org/docs/introducing-jsx.html), and is much less alien than the view languages used in Elm and [Fable](http://fable.io). With Redux, the Blazor pages themselves become very simple, with just presentational content, references to state in the store, and dispatching of actions.
+- The Razor view engine combines the power of a templating engine with the familiarity of HTML, like [JSX](https://reactjs.org/docs/introducing-jsx.html). With Redux, the Blazor pages themselves become very simple, with just presentational content, references to state in the store, and dispatching of actions.
 - When it comes to productivity, Blazor can feel like one of the specialized proprietary platforms such as Silverlight and Flash, but it does in fact produce web standard-compliant code compatible with all major browsers and devices without any plugins.
-- Unlike most of the alternatives (the main exception being [ReasonML](https://reasonml.github.io)), Blazor comes with strong backing from a solid organization.
+- Blazor is actual .NET assemblies running on Mono compiled for WebAssembly. While this may sound excessive in terms of download size, both Mono and the .NET library are less than a megabyte in size.
+- Blazor comes with strong backing from a solid organization (Microsoft).
 
 ## Advantages over vanilla Blazor
 
-- Implements a one-way model-update-view architecture, by many considered to be [more robust and easier to reason about](https://www.exclamationlabs.com/blog/the-case-for-unidirectional-data-flow/) than a two-way data binding as found in Angular. 
+- Implements a one-way model-update-view architecture, by many considered to be [more robust and easier to reason about](https://www.exclamationlabs.com/blog/the-case-for-unidirectional-data-flow/) than a two-way data binding as found in Angular.
 - Application state is kept in a single state store, facilitating advanced features such as [undo/redo](https://github.com/elm-community/undo-redo), [hydration of application state](https://github.com/rt2zz/redux-persist), and [time-traveling debuggers](http://debug.elm-lang.org).
 - Any Blazor component upgraded to a Redux component will subscribe to changes in the state store and automatically update its view, so you don't have to worry about calling `StateHasChanged()`.
 - Blazor Redux supports F#, which means you can take advantage of some advanced language features when designing your types, actions and reducer logic. The [discriminated union types](https://fsharpforfunandprofit.com/posts/discriminated-unions) are perfect for designing type-safe application messages, and [the `with` keyword in record types](https://fsharpforfunandprofit.com/posts/records/) makes it simple to work with immutable types in your reducer logic. Not to mention that a model with many small types can be created with much less ceremony. F# lends itself well to [type driven development](https://fsharpforfunandprofit.com/series/designing-with-types.html). However, the Blazor project itself and the Razor pages must be C#.
@@ -25,7 +26,7 @@ The combination of Blazor and Redux becomes an incredibly compelling platform fo
 
 Follow these steps, or just open `samples.sln` in this repository and take a look.
 
-1. Assuming you have Visual Studio 15.7 or newer and the Blazor tooling installed, create a new Blazor project.
+1. Assuming you have the [.NET Core SDK 2.1.300](https://www.microsoft.com/net/download/dotnet-core/sdk-2.1.300-preview2) or newer, [Visual Studio 15.7](https://www.visualstudio.com/vs/preview/) or newer, and the [Blazor tooling](https://marketplace.visualstudio.com/items?itemName=aspnet.blazor) installed, create a new Blazor project.
 
 2. Add the [Blazor-Redux NuGet package](https://www.nuget.org/packages/Blazor-Redux/).
 
@@ -34,7 +35,7 @@ Follow these steps, or just open `samples.sln` in this repository and take a loo
 4. Open `Program.cs` and configure the Redux store in the `BrowserServiceProvider`:
 
 ```csharp
-configure.AddSingleton(new Store<MyState, IAction>(Reducers.RootReducer, new MyState()));
+configure.AddReduxStore<MyState, IAction>(new MyState(), Reducers.RootReducer);
 ```
 
 You will need to add
@@ -67,19 +68,8 @@ Add an F# class library, and add a reference to it from your Blazor project. You
 type MyState =
     {
         Count: int;
-        Forecasts: WeatherForecast[] option;
+        Forecasts: WeatherForecast list option;
     }
-```
-
-For some of your types, you're probably going to have to use classes, due to interop with C# code. For example, if you do `HttpClient.GetJsonAsync<WeatherForecast[]>()` to retrieve JSON, you will need to define `WeatherForecast` like this:
-
-```fsharp
-type WeatherForecast() =
-    member val Date = DateTime.MinValue with get, set
-    member val TemperatureC = 0 with get, set
-    member val TemperatureF = 0 with get, set
-    member val Summary = "" with get, set
-
 ```
 
 ## Designing actions
@@ -126,16 +116,15 @@ type MyMsg =
     | IncrementByOne
     | IncrementByValue of n : int
     | ClearWeather
-    | ReceiveWeather of r : WeatherForecast[]
+    | ReceiveWeather of r : WeatherForecast list
 ```
 
 The common action type is now `MyMsg`, so you will initialize your store in `Program.cs` like this:
 
 ```csharp
-configure.AddSingleton(
-    new Store<MyState, MyMsg>(
-        MyFuncs.MyReducer, 
-        new MyState(0, null)));
+configure.AddReduxStore<MyState, MyMsg>(
+    new MyState(0, null),
+    MyFuncs.MyReducer);
 ```
 
 ## Reducer logic
@@ -216,7 +205,7 @@ Here's a basic Blazor page:
 In your Blazor components, you can dispatch actions like this:
 
 ```csharp
-<button @onclick(() => Dispatch(new IncrementByValueAction(3)))>Click me</button>
+<button onclick=@(() => Dispatch(new IncrementByValueAction(3)))>Click me</button>
 ```
 
 You can also dispatch actions from C# code blocks, such as in `OnInit()` methods:
@@ -278,24 +267,29 @@ If you prefer to keep your F# code pure, and just use it to manage your types, a
 ```fsharp
 module ActionCreators =
     open System.Net.Http
-    open Microsoft.AspNetCore.Blazor
     open FSharp.Control.Tasks
 
     let LoadWeather (dispatch: Dispatcher<MyMsg>, http: HttpClient) =
         task {
             dispatch.Invoke(MyMsg.ClearWeather) |> ignore
-            let! forecasts = http.GetJsonAsync<WeatherForecast[]>("/sample-data/weather.json") |> Async.AwaitTask
+
+            let! forecastString = http.GetStringAsync("/sample-data/weather.json") |> Async.AwaitTask
+            let forecasts: WeatherForecast list =
+                forecastString
+                |> Json.parse
+                |> Json.deserialize
+                
             dispatch.Invoke(MyMsg.ReceiveWeather forecasts) |> ignore
         }
 ```
 
-The `task` computation expression requires the NuGet package `TaskBuilder.fs`.
+The `task` computation expression requires the NuGet package `TaskBuilder.fs`. Also note that we are not using `GetJsonAsync` here, because SimpleJson doesn't understand F# record types. Instead we just download the JSON data as a string, and use [Chiron](https://github.com/xyncro/chiron) to deserialize it. This means we have to add serialization instructions to our record types. See `samples.sln` for details. Alternatively, you could use classes in F# instead of record types. A JSON serialization strategy is needed not just for accessing web APIs, but also for exchanging state data with the Redux DevTools, as we will see in the next section.
 
 ## Redux DevTools
 
 Using the Redux DevTools, you can monitor all actions and state changes going on in your app, time travel to any state in the history, save and load state, and reset the application state.
 
-The DevTools will also take care of importing the current state whenever you reload your app. This is similar to Hot Module Replacement, where you can make changes to the app and have the new version automatically repopulate the application state. This is very productive when working on a part of your app that requires a lot of actions in order to get to.
+The DevTools can also take care of importing the current state whenever you reload your app. This is similar to Hot Module Replacement, where you can make changes to the app and have the new version automatically repopulate the application state. This is very productive when working on a part of your app that requires a lot of actions in order to get to.
 
 To connect with the Redux DevTools, all you have to do is to add
 
@@ -304,6 +298,99 @@ To connect with the Redux DevTools, all you have to do is to add
 ```
 
 somewhere, such as in the header of `App.cshtml`.
+
+### F#
+
+For F#, you will need to help out with the JSON deserialization, because SimpleJson doesn't understand F# record types, and Mono for WebAssembly doesn't currently support `Reflection.Emit`, which Json.NET and some other libraries depend on. See `samples.sln` for how to handle JSON using Chiron. You will have to connect your serialization helpers in `Program.cs` like this:
+
+```csharp
+configure.AddReduxStore<MyState, MyMsg>(
+    new MyState("", 0, null), 
+    MyFuncs.MyReducer, 
+    options =>
+{
+    options.StateSerializer = MyFuncs.StateSerializer;
+    options.StateDeserializer = MyFuncs.StateDeserializer;
+});
+```
+
+## State-aware routing
+
+If you try time traveling with Redux DevTools now, you will see that you can move back and forth and observe how the app has responded to state changes. But if you have been visiting several pages in your app, the time traveling doesn't show you that. It will stay on whichever page you are at. No problem, because Blazor Redux supports state-aware routing, as long as you decide how to store the location in your state, and give Blazor Redux access to that.
+
+### C#
+
+The location data is typically just an additional string in your state:
+
+```csharp
+public class MyState
+{
+    public string Location { get; set; }
+    public int Count { get; set; }
+    ...
+}
+```
+
+You also need to tell Blazor Redux where to find this location data. This enables automatic navigation whenever you change the location state. You do this in `Program.cs`:
+
+```csharp
+configure.AddReduxStore<MyState, IAction>(
+    new MyState(), Reducers.RootReducer, options =>
+{
+    options.GetLocation = state => state.Location;
+});
+```
+
+Next, make sure you add `Location.Reducer` to your `RootReducer`:
+
+```csharp
+public static MyState RootReducer(MyState state, IAction action)
+{
+    return new MyState
+    {
+        Location = Location.Reducer(state.Location, action),
+        Count = CountReducer(state.Count, action),
+        ...
+    };
+}
+```
+
+This will work as long as your `RootReducer` operates on `IAction`. If it doesn't, follow the approach described in the F# section below.
+
+### F#
+
+In F# your actions will typically be a discriminated union type and not implement `IAction`, hence the approach is a little different.
+
+You will still add the location as a string to your state:
+
+```fsharp
+type MyState =
+    { 
+        Location: string
+        Count: int 
+        ...
+    }
+```
+
+Next, you will implement a separate `LocationReducer`:
+
+```fsharp
+let LocationReducer state (action: NewLocationAction) =
+    { state with Location = action.Location }
+```
+
+Now you need to tell Blazor Redux about the location data and reducer. You do that in `Program.cs` like this:
+
+```csharp
+configure.AddReduxStore<MyState, MyMsg>(
+    new MyState("", 0, null), 
+    MyFuncs.MyReducer, 
+    options =>
+{
+    options.LocationReducer = MyFuncs.LocationReducer;
+    options.GetLocation = state => state.Location;
+});
+```
 
 ## Contributing
 

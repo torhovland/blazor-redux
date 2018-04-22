@@ -13,7 +13,6 @@ namespace Minimal
 
             return new MyState
             {
-                Location = state.Location,
                 Count = CountReducer(state.Count, action),
                 Forecasts = ForecastsReducer(state.Forecasts, action)
             };
@@ -44,20 +43,6 @@ namespace Minimal
                 default:
                     return forecasts;
             }
-        }
-
-        public static MyState LocationReducer(MyState state, IAction action)
-        {
-            var newState = RootReducer(state, null);
-
-            switch (action)
-            {
-                case NewLocationAction a:
-                    newState.Location = a.Location;
-                    break;
-            }
-
-            return newState;
         }
     }
 }

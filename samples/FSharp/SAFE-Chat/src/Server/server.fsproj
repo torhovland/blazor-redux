@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>fschathost</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Prelude.fs" />
+    <Compile Include="ChatTypes.fs" />
+    <Compile Include="ChatUser.fs" />
+    <Compile Include="AboutFlow.fs" />
+    <Compile Include="GroupChatFlow.fs" />
+    <Compile Include="ChatServer.fs" />
+    <Compile Include="UserStore.fs" />
+    <Compile Include="Diag.fs" />
+    <Compile Include="Json.fs" />
+    <Compile Include="../Shared/ChatProtocol.fs" />
+    <Compile Include="ProtocolConv.fs" />
+    <Compile Include="UserSession.fs" />
+    <Compile Include="SocketFlow.fs" />
+    <Compile Include="UserSessionFlow.fs" />
+    <Compile Include="Logon.fs" />
+    <Compile Include="app.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>

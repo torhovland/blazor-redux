@@ -1,0 +1,37 @@
+source https://www.nuget.org/api/v2
+storage: none
+
+nuget Suave
+nuget Suave.OAuth
+nuget Suave.Experimental
+nuget Akkling
+nuget Akkling.Streams
+nuget Akkling.Persistence
+nuget Akka.Persistence.SqlServer
+nuget Akka.Persistence.Sqlite
+
+nuget Newtonsoft.Json
+nuget Fable.JsonConverter
+
+nuget Microsoft.Extensions.Configuration
+nuget Microsoft.Extensions.Configuration.Json
+
+nuget Fable.Elmish.HMR
+nuget FSharp.Core
+nuget Fable.Core
+nuget Fable.Elmish.React
+nuget Fable.Elmish.Browser
+nuget Fable.Elmish.Debugger
+nuget Fable.Websockets.Elmish
+
+clitool Microsoft.DotNet.Watcher.Tools 2.0.0
+clitool dotnet-fable
+
+group UITests
+  source https://nuget.org/api/v2
+  framework >= net461
+  nuget FSharp.Core redirects: force
+  nuget Canopy
+  nuget Expecto
+  nuget phantomjs
+  nuget Selenium.WebDriver.ChromeDriver

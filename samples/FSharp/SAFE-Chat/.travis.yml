@@ -1,0 +1,27 @@
+language: csharp
+mono: 
+  - latest
+sudo: required
+dotnet: 2.0.0
+node_js:
+  - "8.9.1"
+script:
+  - mkdir $TRAVIS_BUILD_DIR/src/Docker
+  - mkdir $TRAVIS_BUILD_DIR/src/Docker/Client
+  - npm install yarn -g
+  - yarn
+  - cd $TRAVIS_BUILD_DIR/src/Client
+  - dotnet restore
+  - dotnet fable webpack -- -p
+  - cp -a $TRAVIS_BUILD_DIR/src/Client/public/** $TRAVIS_BUILD_DIR/src/Docker/Client/
+  - cd $TRAVIS_BUILD_DIR/src/Server
+  - dotnet restore
+  - dotnet publish -c Release -o $TRAVIS_BUILD_DIR/src/Docker
+  - cd $TRAVIS_BUILD_DIR/src/Docker
+  - ls -l
+after_success:
+  - cd $TRAVIS_BUILD_DIR/src
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker build -t safe-chat .
+  - docker tag safe-chat anridegod/safe-chat:latest
+  - docker push anridegod/safe-chat:latest

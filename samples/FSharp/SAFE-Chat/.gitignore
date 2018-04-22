@@ -1,0 +1,43 @@
+# use glob syntax
+syntax: glob
+
+# Ignore folders
+build/
+testrunner/
+[Oo]bj/
+[Bb]in/
+[Bb]ackup/
+_ReSharper*/
+_UpgradeReport*
+
+# Ignore Visual Studio files
+*.pdb
+*.suo
+*.user
+*.bak
+*.log
+*.lib
+*.userprefs
+
+# ignore other bs
+*.~?~
+.DS_Store
+*.swp
+TestResult.*
+.xake
+.vs/
+.idea/
+.idea/.idea.fschat/riderModule.iml
+
+CHAT_DATA/
+
+**/public/bundle.js*
+
+# NuGet Packages Directory
+paket-files/
+packages/
+
+# Node
+node_modules/
+project.lock.json
+

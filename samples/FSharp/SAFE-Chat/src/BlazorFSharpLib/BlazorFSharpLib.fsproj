@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Chiron.fs" />
+    <Compile Include="Library.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aether" Version="8.2.0" />
+    <PackageReference Include="FParsec" Version="1.0.3" />
+    <PackageReference Include="TaskBuilder.fs" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\src\BlazorRedux\BlazorRedux.csproj" />
+  </ItemGroup>
+
+</Project>

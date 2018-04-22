@@ -1,0 +1,221 @@
+.fs-chat {
+	height: 100%;
+	padding: 0;
+
+	background-color: $color-chat-bg;
+	box-shadow: 0 0 10px 0 rgba(0,0,0,.2);
+}
+
+
+.fs-chat> .fs-splitter {
+	display: block;
+
+	width: calc(100% - 40px);
+	height: 1px;
+	margin: 0 20px;
+
+	background-color: rgba(#000, .1);
+}
+
+.fs-message-input {
+	position: relative;
+
+	width: 100%;
+	height: 60px;
+
+	> input {
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 0 60px;
+
+		transition: .2s ease-in-out;
+
+		border: none;
+		background-color: transparent;
+
+		&:focus {
+			outline: none;
+			background-color: white;
+		}
+	}
+
+	> button.btn {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+
+		width: 40px;
+		height: 40px;
+
+		color: $color-avatar-bg;
+		border-radius: 50%;
+
+		line-height: 40px;
+
+		&:not([disabled]):not(.disabled):focus, &:not([disabled]):not(.disabled):hover {
+			color: $color-menu-bg;
+			background-color: transparent;
+		}
+	}
+}
+
+.fs-chat-info {
+	position: relative;
+
+	height: 80px;
+
+	h1 {
+		display: block;
+		overflow: hidden;
+
+		width: 100%;
+		height: 45px;
+		margin: 0;
+		padding: 20px 50px 0 20px;
+
+		white-space: nowrap;
+		text-overflow: ellipsis;
+
+		color: $color-menu-bg;
+
+		font-size: 18px;
+		font-weight: bold;
+		line-height: 20px;
+	}
+
+	span {
+		display: block;
+		overflow: hidden;
+
+		width: 100%;
+		height: 15px;
+		margin: -2px 0 0 0;
+		padding: 0 50px 0 20px;
+
+		white-space: nowrap;
+		text-overflow: ellipsis;
+
+		opacity: .62;
+		color: $color-text;
+
+		font-size: $font-size-sm;
+		line-height: 15px;
+	}
+
+	.btn {
+		position: absolute;
+		right: 20px;
+		bottom: 20px;
+
+		display: block;
+
+		width: 40px;
+		height: 40px;
+
+		text-align: center;
+
+		color: $color-avatar-bg;
+		border-radius: 50%;
+
+		&:not([disabled]):not(.disabled):focus, &:not([disabled]):not(.disabled):hover {
+			color: $color-menu-bg;
+			background-color: transparent;
+		}
+	}
+}
+
+.fs-messages {
+	overflow: auto;
+
+	height: calc(100% - 142px);
+	margin: 0;
+}
+
+.fs-message {
+	position: relative;
+
+	width: 100%;
+	height: auto;
+	min-height: 60px;
+
+	&::before {
+		position: absolute;
+		top: 0;
+		left: 15px;
+
+		display: block;
+
+		width: 50px;
+		height: 100%;
+
+		content: ' ';
+
+		border-radius: 25px 25px 0 0;
+		background-color: #f7f5fb;
+	}
+
+	> div:not(.fs-avatar) {
+		margin: 20px 40% 0 45px;
+		padding: 10px 10px 5px 30px;
+
+		background-color: $color-msg-bg;
+
+		p {
+			margin: 0;
+			padding: 0;
+
+			line-height: 20px;
+		}
+
+		h5 {
+			height: 20px;
+			margin: 0;
+			padding: 0;
+
+			font-size: $font-size-sm;
+			line-height: 20px;
+
+			> .user {
+				margin-right: 10px;
+
+				opacity: .8;
+
+				font-weight: bold;
+			}
+
+			> .time {
+				opacity: .62;
+
+				font-style: italic;
+			}
+		}
+	}
+
+	.fs-avatar {
+		position: absolute;
+		top: 5px;
+		left: 20px;
+	}
+
+	&.user {
+		color: white;
+
+		&::before {
+			right: 15px;
+			left: initial;
+		}
+
+		> div:not(.fs-avatar) {
+			margin: 20px 45px 0 40%;
+			padding: 10px 30px 5px 10px;
+
+			background-color: $color-user-msg-bg;
+		}
+
+		.fs-avatar {
+			right: 20px;
+			left: initial;
+		}
+	}
+}

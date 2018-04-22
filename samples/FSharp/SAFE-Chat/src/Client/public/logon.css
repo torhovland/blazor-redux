@@ -1,0 +1,32 @@
+body
+{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	padding: 10px 6%;
+}
+/* Form styles */
+form 
+{
+    border: none;
+    padding: 15%;
+}
+fieldset
+{
+    border: none;
+	padding: 10px;
+}
+
+/* 
+fieldset
+{
+	border: #9b9993 1px solid;
+	padding: 0 10px;
+	margin-bottom: 10px;
+	clear: left;
+}
+
+input[type=text], input[type=password], input[type=number], input[type=email], select
+{
+	border: 1px solid #8A8575;
+	width: 300px;
+} */

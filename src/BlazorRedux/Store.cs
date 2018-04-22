@@ -11,6 +11,7 @@ namespace BlazorRedux
         private readonly ReduxOptions<TState> _options;
         private IUriHelper _uriHelper;
         private string _currentLocation;
+        private bool _timeTraveling;
         private readonly object _syncRoot = new object();
 
         public TState State { get; private set; }
@@ -62,6 +63,7 @@ namespace BlazorRedux
 
         private void OnLocationChanged(object sender, string newAbsoluteUri)
         {
+            if (_timeTraveling) return;
             if (newAbsoluteUri == _currentLocation) return;
 
             lock (_syncRoot)
@@ -81,7 +83,9 @@ namespace BlazorRedux
         private void OnDevToolsTimeTravel(object sender, StringEventArgs e)
         {
             var state = _options.StateDeserializer(e.String);
+            _timeTraveling = true;
             TimeTravel(state);
+            _timeTraveling = false;
         }
 
         private void OnChange(EventArgs e)

@@ -14,10 +14,21 @@ namespace BlazorHosted.Client
 
             return new MyState
             {
-                Location = state.Location,
+                Location = LocationReducer(state.Location, action),
                 Count = CountReducer(state.Count, action),
                 Forecasts = ForecastsReducer(state.Forecasts, action)
             };
+        }
+
+        private static string LocationReducer(string location, IAction action)
+        {
+            switch (action)
+            {
+                case NewLocationAction a:
+                    return a.Location;
+                default:
+                    return location;
+            }
         }
 
         private static int CountReducer(int count, IAction action)
@@ -45,20 +56,6 @@ namespace BlazorHosted.Client
                 default:
                     return forecasts;
             }
-        }
-
-        public static MyState LocationReducer(MyState state, LocationAction action)
-        {
-            var newState = RootReducer(state, null);
-
-            switch (action)
-            {
-                case NewLocationAction a:
-                    newState.Location = a.Location;
-                    break;
-            }
-
-            return newState;
         }
     }
 }

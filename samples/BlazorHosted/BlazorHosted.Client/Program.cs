@@ -13,7 +13,6 @@ namespace BlazorHosted.Client
                 configure.AddReduxStore<MyState, IAction>(
                     new MyState(), Reducers.RootReducer, options =>
                 {
-                    options.LocationReducer = Reducers.LocationReducer;
                     options.GetLocation = state => state.Location;
                 });
             });

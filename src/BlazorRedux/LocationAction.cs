@@ -1,10 +1,6 @@
 ﻿namespace BlazorRedux
 {
-    public class LocationAction
-    {
-    }
-
-    public class NewLocationAction : LocationAction
+    public class NewLocationAction : IAction
     {
         public string Location { get; set; }
     }

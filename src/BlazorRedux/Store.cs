@@ -46,7 +46,7 @@ namespace BlazorRedux
             }
 
             // TODO: Queue up any other actions, and let this apply to the initial state.
-            Dispatch(new NewLocationAction { Location = _uriHelper.GetAbsoluteUri() });
+            DispatchLocation(new NewLocationAction { Location = _uriHelper.GetAbsoluteUri() });
 
             Console.WriteLine("Redux store initialized.");
         }
@@ -69,7 +69,7 @@ namespace BlazorRedux
                 _currentLocation = newAbsoluteUri;
             }
 
-            Dispatch(new NewLocationAction { Location = newAbsoluteUri });
+            DispatchLocation(new NewLocationAction { Location = newAbsoluteUri });
         }
 
         private void OnDevToolsReset(object sender, EventArgs e)
@@ -114,16 +114,24 @@ namespace BlazorRedux
             OnChange(null);
         }
 
-        void Dispatch(LocationAction action)
+        void DispatchLocation(NewLocationAction locationAction)
         {
             var locationReducer = _options.LocationReducer;
+
+            if (locationReducer == null && locationAction is TAction)
+            {
+                // Just use the RootReducer unless the user has configured a LocationReducer
+                var genericAction = (TAction)(object)locationAction;
+                Dispatch(genericAction);
+            }
+
             if (locationReducer == null) return;
 
             lock (_syncRoot)
             {
-                State = locationReducer(State, action);
-                DevToolsInterop.Log(action.ToString(), _options.StateSerializer(State));
-                History.Add(new HistoricEntry<TState, object>(State, action));
+                State = locationReducer(State, locationAction);
+                DevToolsInterop.Log(locationAction.ToString(), _options.StateSerializer(State));
+                History.Add(new HistoricEntry<TState, object>(State, locationAction));
             }
 
             OnChange(null);

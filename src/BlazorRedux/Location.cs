@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BlazorRedux
+﻿namespace BlazorRedux
 {
-    public class Location
+    public static class Location
     {
         public static string Reducer(string location, IAction action)
         {

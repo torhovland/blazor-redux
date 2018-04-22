@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\BlazorRedux\BlazorRedux.csproj" />
+    <ProjectReference Include="..\..\..\..\src\BlazorRedux\BlazorRedux.csproj" />
   </ItemGroup>
 
 </Project>

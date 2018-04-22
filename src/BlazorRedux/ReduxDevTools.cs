@@ -62,7 +62,7 @@ devTools.subscribe((message) => {
             var states = payload.nextLiftedState.computedStates;
             var index = payload.nextLiftedState.currentStateIndex;
             var state = states[index].state;
-            timeTravel(state);
+            timeTravel(JSON.stringify(state));
         }
         else if (payload.type === 'RESET') {
             // Reset state

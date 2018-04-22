@@ -13,21 +13,10 @@ namespace BlazorStandalone
 
             return new MyState
             {
-                Location = LocationReducer(state.Location, action),
+                Location = Location.Reducer(state.Location, action),
                 Count = CountReducer(state.Count, action),
                 Forecasts = ForecastsReducer(state.Forecasts, action)
             };
-        }
-
-        private static string LocationReducer(string location, IAction action)
-        {
-            switch (action)
-            {
-                case NewLocationAction a:
-                    return a.Location;
-                default:
-                    return location;
-            }
         }
 
         private static int CountReducer(int count, IAction action)

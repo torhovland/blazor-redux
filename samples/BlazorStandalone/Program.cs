@@ -10,10 +10,9 @@ namespace BlazorStandalone
         {
             var serviceProvider = new BrowserServiceProvider(configure =>
             {
-                configure.AddReduxStore<MyState, IAction>(options =>
+                configure.AddReduxStore<MyState, IAction>(Reducers.RootReducer, options =>
                 {
                     options.InitialState = new MyState();
-                    options.RootReducer = Reducers.RootReducer;
                     options.LocationReducer = Reducers.LocationReducer;
                     options.GetLocation = state => state.Location;
                 });

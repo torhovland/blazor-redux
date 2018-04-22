@@ -6,7 +6,8 @@ namespace BlazorRedux
 {
     public class Store<TState, TAction> : IDisposable
     {
-        private readonly ReduxOptions<TState, TAction> _options;
+        private readonly Reducer<TState, TAction> _rootReducer;
+        private readonly ReduxOptions<TState> _options;
         private IUriHelper _uriHelper;
         private string _currentLocation;
         private readonly object _syncRoot = new object();
@@ -15,8 +16,9 @@ namespace BlazorRedux
         public IList<HistoricEntry<TState, object>> History { get; }
         public event EventHandler Change;
 
-        public Store(ReduxOptions<TState, TAction> options)
+        public Store(Reducer<TState, TAction> rootReducer, ReduxOptions<TState> options)
         {
+            _rootReducer = rootReducer;
             _options = options;
             State = options.InitialState;
 
@@ -99,7 +101,7 @@ namespace BlazorRedux
         {
             lock (_syncRoot)
             {
-                State = _options.RootReducer(State, action);
+                State = _rootReducer(State, action);
                 DevToolsInterop.Log(action.ToString(), _options.StateSerializer(State));
                 History.Add(new HistoricEntry<TState, object>(State, action));
             }

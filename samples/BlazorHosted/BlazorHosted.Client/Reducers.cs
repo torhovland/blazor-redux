@@ -7,7 +7,7 @@ namespace BlazorHosted.Client
 {
     public static class Reducers
     {
-        public static MyState MainReducer(MyState state, IAction action)
+        public static MyState RootReducer(MyState state, IAction action)
         {
             if (state == null)
                 throw new ArgumentNullException(nameof(state));
@@ -49,7 +49,7 @@ namespace BlazorHosted.Client
 
         public static MyState LocationReducer(MyState state, LocationAction action)
         {
-            var newState = MainReducer(state, null);
+            var newState = RootReducer(state, null);
 
             switch (action)
             {

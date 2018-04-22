@@ -14,7 +14,7 @@ namespace BlazorRedux
         }
 
         public TState InitialState { get; set; }
-        public Reducer<TState, TAction> MainReducer { get; set; }
+        public Reducer<TState, TAction> RootReducer { get; set; }
         public Reducer<TState, LocationAction> LocationReducer { get; set; }
         public Func<TState, string> GetLocation { get; set; }
         public Func<TState, string> StateSerializer { get; set; }

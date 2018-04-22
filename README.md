@@ -34,7 +34,7 @@ Follow these steps, or just open `samples.sln` in this repository and take a loo
 4. Open `Program.cs` and configure the Redux store in the `BrowserServiceProvider`:
 
 ```csharp
-configure.AddSingleton(new Store<MyState, IAction>(Reducers.MainReducer, new MyState()));
+configure.AddSingleton(new Store<MyState, IAction>(Reducers.RootReducer, new MyState()));
 ```
 
 You will need to add
@@ -162,7 +162,7 @@ public static int CountReducer(int count, IAction action)
 You can have one big reducer with cases for each of your application actions, or you can break them up and create a root reducer:
 
 ```csharp
-public static MyState MainReducer(MyState state, IAction action)
+public static MyState RootReducer(MyState state, IAction action)
 {
     return new MyState
     {

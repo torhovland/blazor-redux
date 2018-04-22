@@ -99,7 +99,7 @@ namespace BlazorRedux
         {
             lock (_syncRoot)
             {
-                State = _options.MainReducer(State, action);
+                State = _options.RootReducer(State, action);
                 DevToolsInterop.Log(action.ToString(), _options.StateSerializer(State));
                 History.Add(new HistoricEntry<TState, object>(State, action));
             }

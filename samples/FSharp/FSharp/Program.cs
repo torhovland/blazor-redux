@@ -14,7 +14,7 @@ namespace FSharp
                 configure.AddReduxStore<MyState, MyMsg>(options =>
                 {
                     options.InitialState = new MyState("", 0, null);
-                    options.MainReducer = MyFuncs.MyReducer;
+                    options.RootReducer = MyFuncs.MyReducer;
                     options.LocationReducer = MyFuncs.LocationReducer;
                     options.GetLocation = state => state.Location;
                     options.StateSerializer = MyFuncs.StateSerializer;

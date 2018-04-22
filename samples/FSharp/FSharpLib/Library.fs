@@ -62,14 +62,14 @@ type MyAppComponent() =
     inherit ReduxComponent<MyState, MyMsg>()
 
 module MyFuncs =
-    let MyReducer (state: MyState) action =
+    let MyReducer state action =
         match action with
             | IncrementByOne -> { state with Count = state.Count + 1 }
             | IncrementByValue n -> { state with Count = state.Count + n }
             | ClearWeather -> { state with Forecasts = None }
             | ReceiveWeather r -> { state with Forecasts = Some r }
 
-    let LocationReducer (state: MyState) (action: NewLocationAction) =
+    let LocationReducer state (action: NewLocationAction) =
         { state with Location = action.Location }
 
     let StateSerializer (state: MyState) =

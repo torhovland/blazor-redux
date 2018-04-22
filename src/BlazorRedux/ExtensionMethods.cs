@@ -9,10 +9,10 @@ namespace BlazorRedux
             this IServiceCollection configure,
             TState initialState,
             Reducer<TState, TAction> rootReducer,
-            Action<ReduxOptions<TState>> options)
+            Action<ReduxOptions<TState>> options = null)
         {
             var reduxOptions = new ReduxOptions<TState>();
-            options(reduxOptions);
+            options?.Invoke(reduxOptions);
             configure.AddSingleton(new Store<TState, TAction>(initialState, rootReducer, reduxOptions));
         }
     }

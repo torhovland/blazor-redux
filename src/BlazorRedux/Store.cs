@@ -89,7 +89,9 @@ namespace BlazorRedux
             var handler = Change;
             handler?.Invoke(this, e);
 
-            var newLocation = _options.GetLocation(State);
+            var getLocation = _options.GetLocation;
+            if (getLocation == null) return;
+            var newLocation = getLocation(State);
             if (newLocation == _currentLocation || newLocation == null) return;
 
             lock (_syncRoot)
@@ -114,9 +116,12 @@ namespace BlazorRedux
 
         void Dispatch(LocationAction action)
         {
+            var locationReducer = _options.LocationReducer;
+            if (locationReducer == null) return;
+
             lock (_syncRoot)
             {
-                State = _options.LocationReducer(State, action);
+                State = locationReducer(State, action);
                 DevToolsInterop.Log(action.ToString(), _options.StateSerializer(State));
                 History.Add(new HistoricEntry<TState, object>(State, action));
             }

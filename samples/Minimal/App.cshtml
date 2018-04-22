@@ -1,0 +1,18 @@
+﻿@inherits MyAppComponent
+@inject HttpClient Http
+@using System.Threading.Tasks
+@using BlazorRedux
+@ReduxDevTools
+<!--
+    Configuring this here is temporary. Later we'll move the app config
+    into Program.cs, and it won't be necessary to specify AppAssembly.
+-->
+<Router AppAssembly=typeof(Program).Assembly />
+
+@functions
+{
+    protected override async Task OnInitAsync()
+    {
+        await ActionCreators.LoadWeather(Store.Dispatch, Http);
+    }
+}

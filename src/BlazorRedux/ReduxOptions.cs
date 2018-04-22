@@ -8,12 +8,10 @@ namespace BlazorRedux
         public ReduxOptions()
         {
             // Defaults
-            InitialState = default(TState);
             StateSerializer = state => JsonUtil.Serialize(state);
             StateDeserializer = JsonUtil.Deserialize<TState>;
         }
 
-        public TState InitialState { get; set; }
         public Reducer<TState, LocationAction> LocationReducer { get; set; }
         public Func<TState, string> GetLocation { get; set; }
         public Func<TState, string> StateSerializer { get; set; }

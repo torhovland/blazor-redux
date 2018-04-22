@@ -6,6 +6,7 @@ namespace BlazorRedux
 {
     public class Store<TState, TAction> : IDisposable
     {
+        private readonly TState _initialState;
         private readonly Reducer<TState, TAction> _rootReducer;
         private readonly ReduxOptions<TState> _options;
         private IUriHelper _uriHelper;
@@ -16,11 +17,13 @@ namespace BlazorRedux
         public IList<HistoricEntry<TState, object>> History { get; }
         public event EventHandler Change;
 
-        public Store(Reducer<TState, TAction> rootReducer, ReduxOptions<TState> options)
+        public Store(TState initialState, Reducer<TState, TAction> rootReducer, ReduxOptions<TState> options)
         {
+            _initialState = initialState;
             _rootReducer = rootReducer;
             _options = options;
-            State = options.InitialState;
+
+            State = initialState;
 
             DevToolsInterop.Reset += OnDevToolsReset;
             DevToolsInterop.TimeTravel += OnDevToolsTimeTravel;
@@ -71,7 +74,7 @@ namespace BlazorRedux
 
         private void OnDevToolsReset(object sender, EventArgs e)
         {
-            var state = _options.InitialState;
+            var state = _initialState;
             TimeTravel(state);
         }
 

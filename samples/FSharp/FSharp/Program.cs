@@ -11,9 +11,11 @@ namespace FSharp
         {
             var serviceProvider = new BrowserServiceProvider(configure =>
             {
-                configure.AddReduxStore<MyState, MyMsg>(MyFuncs.MyReducer, options =>
+                configure.AddReduxStore<MyState, MyMsg>(
+                    new MyState("", 0, null), 
+                    MyFuncs.MyReducer, 
+                    options =>
                 {
-                    options.InitialState = new MyState("", 0, null);
                     options.LocationReducer = MyFuncs.LocationReducer;
                     options.GetLocation = state => state.Location;
                     options.StateSerializer = MyFuncs.StateSerializer;

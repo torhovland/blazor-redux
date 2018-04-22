@@ -34,7 +34,7 @@ Follow these steps, or just open `samples.sln` in this repository and take a loo
 4. Open `Program.cs` and configure the Redux store in the `BrowserServiceProvider`:
 
 ```csharp
-configure.AddSingleton(new Store<MyModel, IAction>(Reducers.MainReducer, new MyModel()));
+configure.AddSingleton(new Store<MyState, IAction>(Reducers.MainReducer, new MyState()));
 ```
 
 You will need to add
@@ -49,10 +49,10 @@ using BlazorRedux;
 
 ### C#
 
-You can basically just add the classes you need, typically with properties. Here's a sample model class:
+You can basically just add the classes you need, typically with properties. Here's a sample state class:
 
 ```csharp
-public class MyModel
+public class MyState
 {
     public int Count { get; set; }
     public IEnumerable<WeatherForecast> Forecasts { get; set; }
@@ -64,7 +64,7 @@ public class MyModel
 Add an F# class library, and add a reference to it from your Blazor project. You can use F# record types, such as this:
 
 ```fsharp
-type MyModel =
+type MyState =
     {
         Count: int;
         Forecasts: WeatherForecast[] option;
@@ -133,9 +133,9 @@ The common action type is now `MyMsg`, so you will initialize your store in `Pro
 
 ```csharp
 configure.AddSingleton(
-    new Store<MyModel, MyMsg>(
+    new Store<MyState, MyMsg>(
         MyFuncs.MyReducer, 
-        new MyModel(0, null)));
+        new MyState(0, null)));
 ```
 
 ## Reducer logic
@@ -162,9 +162,9 @@ public static int CountReducer(int count, IAction action)
 You can have one big reducer with cases for each of your application actions, or you can break them up and create a root reducer:
 
 ```csharp
-public static MyModel MainReducer(MyModel state, IAction action)
+public static MyState MainReducer(MyState state, IAction action)
 {
-    return new MyModel
+    return new MyState
     {
         Count = CountReducer(state.Count, action),
         Forecasts = ForecastsReducer(state.Forecasts, action)
@@ -196,7 +196,7 @@ Time to connect the Redux store with the Blazor components and actually output s
 ```csharp
 using BlazorRedux;
 
-public class MyAppComponent : ReduxComponent<MyModel, IAction>
+public class MyAppComponent : ReduxComponent<MyState, IAction>
 {
 }
 ```

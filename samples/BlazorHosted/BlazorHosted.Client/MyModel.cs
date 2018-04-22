@@ -4,7 +4,7 @@ using BlazorHosted.Shared;
 
 namespace BlazorHosted.Client
 {
-    public class MyModel
+    public class MyState
     {
         public string Location { get; set; }
         public int Count { get; set; }

@@ -2,7 +2,7 @@
 
 namespace BlazorStandalone
 {
-    public class MyAppComponent : ReduxComponent<MyModel, IAction>
+    public class MyAppComponent : ReduxComponent<MyState, IAction>
     {
     }
 }

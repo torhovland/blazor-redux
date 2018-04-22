@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Blazor.RenderTree;
 
 namespace BlazorRedux
 {
-    public class ReduxDebugger<TModel, TAction> : ReduxComponent<TModel, TAction>
+    public class ReduxDebugger<TState, TAction> : ReduxComponent<TState, TAction>
     {
-        private HistoricEntry<TModel, object> _selectedEntry;
+        private HistoricEntry<TState, object> _selectedEntry;
 
         public RenderFragment Debugger;
         
@@ -85,13 +85,13 @@ namespace BlazorRedux
             };
         }
 
-        void SelectEntry(HistoricEntry<TModel, object> entry)
+        void SelectEntry(HistoricEntry<TState, object> entry)
         {
             _selectedEntry = entry;
             Store.TimeTravel(entry.State);
         }
 
-        int RenderActionDetails(RenderTreeBuilder builder, int seq, HistoricEntry<TModel, object> entry)
+        int RenderActionDetails(RenderTreeBuilder builder, int seq, HistoricEntry<TState, object> entry)
         {
             if (entry == null)
             {

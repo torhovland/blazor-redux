@@ -7,12 +7,12 @@ namespace BlazorHosted.Client
 {
     public static class Reducers
     {
-        public static MyModel MainReducer(MyModel state, IAction action)
+        public static MyState MainReducer(MyState state, IAction action)
         {
             if (state == null)
                 throw new ArgumentNullException(nameof(state));
 
-            return new MyModel
+            return new MyState
             {
                 Location = state.Location,
                 Count = CountReducer(state.Count, action),
@@ -47,7 +47,7 @@ namespace BlazorHosted.Client
             }
         }
 
-        public static MyModel LocationReducer(MyModel state, LocationAction action)
+        public static MyState LocationReducer(MyState state, LocationAction action)
         {
             var newState = MainReducer(state, null);
 

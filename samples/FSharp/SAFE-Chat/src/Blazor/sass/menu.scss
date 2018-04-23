@@ -1,0 +1,223 @@
+.fs-menu {
+	height: 100%;
+	padding: 0;
+
+	background-color: $color-menu-bg;
+}
+
+.fs-menu> h2 {
+	position: relative;
+
+	display: block;
+
+	height: 40px;
+	margin: 0 15px;
+	padding: 10px 0 0 0;
+
+	text-transform: uppercase;
+
+	color: $color-menu-fg;
+
+	font-size: $font-size;
+	font-weight: normal;
+	line-height: 30px;
+
+	> .btn {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+
+		display: block;
+
+		width: 30px;
+		height: 30px;
+
+		text-align: center;
+
+		border-radius: 50%;
+
+		&:not([disabled]):not(.disabled):focus, &:not([disabled]):not(.disabled):hover {
+			color: $color-menu-fg;
+		}
+	}
+}
+
+.fs-menu> .fs-splitter {
+	display: block;
+
+	height: 1px;
+	margin: 5px 15px 0 15px;
+
+	content: ' ';
+
+	background-color: rgba(#000, .2);
+}
+
+.fs-user {
+	position: relative;
+
+	height: 80px;
+	margin: 0 15px;
+
+	.fs-avatar {
+		position: absolute;
+		top: 20px;
+		left: 0;
+	}
+
+	h3 {
+		display: block;
+		overflow: hidden;
+
+		width: 100%;
+		height: 45px;
+		margin: 0;
+		padding: 25px 50px 0 50px;
+
+		white-space: nowrap;
+		text-overflow: ellipsis;
+
+		color: $color-menu-fg;
+
+		font-size: $font-size;
+		font-weight: bold;
+		line-height: 20px;
+	}
+
+	span {
+		display: block;
+		overflow: hidden;
+
+		width: 100%;
+		height: 15px;
+		margin: -2px 0 0 0;
+		padding: 0 50px;
+
+		white-space: nowrap;
+		text-overflow: ellipsis;
+
+		opacity: .62;
+		color: $color-menu-fg;
+
+		font-size: $font-size-sm;
+		line-height: 15px;
+	}
+
+	.btn {
+		position: absolute;
+		right: 0;
+		bottom: 25px;
+
+		display: block;
+
+		width: 30px;
+		height: 30px;
+
+		text-align: center;
+
+		color: $color-menu-fg;
+		border-radius: 50%;
+
+		&:not([disabled]):not(.disabled):focus, &:not([disabled]):not(.disabled):hover {
+			color: $color-menu-fg;
+		}
+	}
+}
+
+.fs-channel {
+	display: block;
+	overflow: hidden;
+
+	width: 100%;
+	height: 50px;
+	padding: 5px 15px;
+
+	color: $color-menu-fg;
+	border-radius: 0;
+
+	text-align: left;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+
+	> h1 {
+		line-height: 20px;
+		margin: 0;
+
+		font-size: $font-size;
+	}
+
+	> span {
+		display: block;
+		overflow: hidden;
+
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	
+		opacity: .62;
+
+		font-size: $font-size-sm;
+		line-height: 15px;
+	}
+
+	&:not([disabled]):not(.disabled):focus, &:not([disabled]):not(.disabled):hover {
+		color: $color-menu-fg;
+	}
+
+	&.selected {
+		color: $color-menu-bg;
+		background-color: $color-chat-bg;
+
+		&::after {
+			position: absolute;
+			top: 10px;
+			left: 8px;
+
+			display: block;
+
+			width: 2px;
+			height: 30px;
+
+			content: ' ';
+
+			background-color: $color-menu-bg;
+		}
+
+		&:not([disabled]):not(.disabled):focus, &:not([disabled]):not(.disabled):hover {
+			color: $color-menu-bg;
+			background-color: $color-chat-bg;
+		}
+	}
+}
+
+.fs-new-channel {
+	display: block;
+	overflow: hidden;
+
+	width: 100%;
+	height: 0;
+	padding: 0 15px;
+
+	transition: .2s ease-in-out;
+
+	color: white;
+	border: none;
+	background-color: lighten($color-menu-bg, 5%);
+
+	line-height: 0;
+
+	&::-webkit-input-placeholder, &::-moz-input-placeholder, &::-ms-input-placeholder {
+		opacity: 1;
+		color: white;
+	}
+
+	&.open {
+		height: 50px;
+
+		line-height: 50px;
+
+		&:focus {
+			outline: none;
+			background-color: lighten($color-menu-bg, 15%);
+		}
+	}
+}

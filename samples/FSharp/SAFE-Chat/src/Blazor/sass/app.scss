@@ -1,0 +1,99 @@
+@import './variables';
+
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+
+	background-color: #e1dfe5;
+
+	font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.fs-app {
+	display: block;
+
+	width: 100%;
+	height: 100%;
+
+	> .container {
+		height: 100%;
+	}
+}
+
+.btn {
+	&:not([disabled]):not(.disabled):focus {
+		outline: none;
+		box-shadow: none;
+	}
+
+	&:not([disabled]):not(.disabled):active {
+		outline: none;
+		box-shadow: none;
+	}
+}
+
+.btn {
+	position: relative;
+
+	margin: 0;
+	padding: 0;
+
+	transition: .2s ease-in-out;
+
+	border: 0;
+	border-radius: 2px;
+	background-color: transparent;
+
+	font-size: $font-size;
+
+	&:not([disabled]):not(.disabled):hover {
+		outline: none;
+		background-color: transparentize(#000, .88);
+	}
+
+	&:not([disabled]):not(.disabled):active {
+		background-color: transparentize(#000, .77);
+	}
+}
+
+.fs-avatar {
+	display: block;
+	overflow: hidden;
+
+	width: 40px;
+	height: 40px;
+
+	border-radius: 50%;
+	background-position: center center;
+	background-size: cover;
+
+	> i {
+		display: block;
+
+		width: 100%;
+		height: 100%;
+
+		text-align: center;
+
+		color: white;
+		background-color: $color-avatar-bg;
+
+		font-size: 24px;
+		line-height: 40px;
+	}
+
+	&.mini {
+		width: 20px;
+		height: 20px;
+
+		> i {
+			font-size: 18px;
+			line-height: 20px;
+		}
+	}
+}
+
+@import './chat';
+@import './menu';

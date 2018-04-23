@@ -1,13 +1,11 @@
 @implements ILayoutComponent
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-3">
-            <NavMenu />
-        </div>
-        <div class="col-sm-9">
-            @Body
-        </div>
+<div class="container">
+    <div class="col-md-4 fs-menu">
+        <NavMenu />
+    </div>
+    <div class="col-xs-12 col-md-8 fs-chat">
+        @Body
     </div>
 </div>
 

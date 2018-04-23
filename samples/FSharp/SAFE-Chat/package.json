@@ -3,33 +3,16 @@
   "version": "1.0.0",
   "description": "Simple Fable App",
   "scripts": {
-    "build": "webpack -p",
-    "start": "webpack-dev-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "yarn run build:css && yarn run build:dotnet",
+    "build:css": "sass src/blazor/sass/app.scss src/blazor/bin/debug/netstandard2.0/dist/css/site.css",
+    "build:dotnet": "dotnet build",
+    "start": "dotnet run --project src/server"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "babel-runtime": "^6.26.0",
-    "react": "^15.6.2",
-    "react-dom": "^15.6.2",
-    "react-markdown": "^3.3.0",
-    "remotedev": "0.2.4"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-es2015": "^6.24.1",
-    "css-loader": "^0.28.7",
-    "fable-loader": "^1.1.2",
-    "fable-utils": "^1.0.6",
-    "loglevel": "^1.5.0",
-    "node-sass": "^4.5.3",
-    "sass-loader": "^6.0.6",
-    "style-loader": "^0.18.2",
-    "webpack": "^3.6.0",
-    "webpack-dev-server": "^2.8.2"
+    "sass": "^1.2.1"
   }
 }

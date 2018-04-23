@@ -31,10 +31,10 @@ let main argv =
         let (|Port|_|) = parse System.UInt16.TryParse
         let (|IPAddress|_|) = parse System.Net.IPAddress.TryParse
 
-        //default bind to 127.0.0.1:8083
+        //default bind to 127.0.0.1:8084
         let defaultArgs = {
-            IP = System.Net.IPAddress.Loopback; Port = 8083us
-            ClientPath = ".." </> "Client" </> "public"
+            IP = System.Net.IPAddress.Loopback; Port = 8084us
+            ClientPath = "src" </> "Blazor" </> "bin" </> "Debug" </> "netstandard2.0" </> "dist"
             }
 
         let rec parseArgs b args =
@@ -58,14 +58,31 @@ let main argv =
 
     let app = App.root >=> logWithLevelStructured Logging.Info logger logFormatStructured
 
+    let createMimeType name compression =
+        { name=name; compression=compression } |> Some
+    
+    let mimeTypes = function
+      | ".css" -> createMimeType "text/css" true
+      | ".gif" -> createMimeType "image/gif" false
+      | ".png" -> createMimeType "image/png" false
+      | ".htm"
+      | ".html" -> createMimeType "text/html" true
+      | ".jpe"
+      | ".jpeg"
+      | ".jpg" -> createMimeType "image/jpeg" false
+      | ".js"  -> createMimeType "application/x-javascript" true
+      | ".wasm" -> createMimeType "application/wasm" false
+      | ".dll" -> createMimeType "application/octet" false
+      | _      -> None
+
     let config =
         { defaultConfig with
             logger = Targets.create LogLevel.Debug [|"ServerCode"; "Server" |]
             bindings = [ HttpBinding.create HTTP args.IP args.Port ]
             cookieSerialiser = TweakingSuave.JsonNetCookieSerialiser()
             homeFolder = args.ClientPath |> (Path.GetFullPath >> Some)
-
             serverKey = App.Secrets.readCookieSecret()
+            mimeTypesMap = mimeTypes
         }
 
     let cts = new System.Threading.CancellationTokenSource()
@@ -80,6 +97,7 @@ let main argv =
     Async.Start (application, cts.Token)
 
     //kill the server
+    printfn "%s" config.homeFolder.Value
     printfn "type 'q' to gracefully stop"
     while "q" <> System.Console.ReadLine() do ()
     cts.Cancel()

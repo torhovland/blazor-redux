@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Blazor.Services;
 
 namespace BlazorRedux
@@ -13,6 +14,7 @@ namespace BlazorRedux
         private string _currentLocation;
         private bool _timeTraveling;
         private readonly object _syncRoot = new object();
+        private IStoreBuilder<TState, TAction> _builder = new StoreBuilder<TState, TAction>();
 
         public TState State { get; private set; }
         public IList<HistoricEntry<TState, object>> History { get; }
@@ -34,6 +36,7 @@ namespace BlazorRedux
             {
                 new HistoricEntry<TState, object>(State)
             };
+
         }
 
         internal void Init(IUriHelper uriHelper)
@@ -106,16 +109,10 @@ namespace BlazorRedux
             _uriHelper.NavigateTo(newLocation);
         }
 
-        public void Dispatch(TAction action)
+        public async void Dispatch(TAction action)
         {
-            lock (_syncRoot)
-            {
-                State = _rootReducer(State, action);
-                DevToolsInterop.Log(action.ToString(), _options.StateSerializer(State));
-                History.Add(new HistoricEntry<TState, object>(State, action));
-            }
-
-            OnChange(null);
+            var app = _builder.Build(this);
+            await app.Invoke(State, action);
         }
 
         void DispatchLocation(NewLocationAction locationAction)
@@ -149,6 +146,25 @@ namespace BlazorRedux
             }
 
             OnChange(null);
+        }
+
+        internal Task InvokeAsync(TState state, TAction action)
+        {
+            lock (_syncRoot)
+            {
+                State = _rootReducer(state, action);
+                DevToolsInterop.Log(action.ToString(), _options.StateSerializer(State));
+                History.Add(new HistoricEntry<TState, object>(State, action));
+            }
+
+            OnChange(null);
+            return Task.CompletedTask;
+        }
+
+        public void ApplyMiddleware(Action<IStoreBuilder<TState, TAction>> builder = null)
+        {
+            //var storeBuilder = new StoreBuilder<TState, TAction>();
+            builder?.Invoke(_builder);
         }
     }
 }

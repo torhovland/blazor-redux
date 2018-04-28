@@ -148,11 +148,13 @@ namespace BlazorRedux
             OnChange(null);
         }
 
-        internal Task InvokeAsync(TState state, TAction action)
+        internal Task Invoke(ref TState state, TAction action)
         {
             lock (_syncRoot)
             {
-                State = _rootReducer(state, action);
+                state = _rootReducer(state, action);
+                State = state;
+                Console.WriteLine("State has changed inside InvokeAsync: {0}", _options.StateSerializer(state));
                 DevToolsInterop.Log(action.ToString(), _options.StateSerializer(State));
                 History.Add(new HistoricEntry<TState, object>(State, action));
             }
@@ -163,7 +165,6 @@ namespace BlazorRedux
 
         public void ApplyMiddleware(Action<IStoreBuilder<TState, TAction>> builder = null)
         {
-            //var storeBuilder = new StoreBuilder<TState, TAction>();
             builder?.Invoke(_builder);
         }
     }

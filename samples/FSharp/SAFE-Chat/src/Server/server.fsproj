@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>fschathost</AssemblyName>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="../Shared/Chiron.fs" />
     <Compile Include="Prelude.fs" />
     <Compile Include="ChatTypes.fs" />
     <Compile Include="ChatUser.fs" />
@@ -22,6 +23,10 @@
     <Compile Include="Logon.fs" />
     <Compile Include="app.fs" />
     <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Aether" Version="8.2.0" />
+    <PackageReference Include="FParsec" Version="1.0.3" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

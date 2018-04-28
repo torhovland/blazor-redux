@@ -36,6 +36,15 @@ type WeatherForecast =
 type ChatAppComponent() =
     inherit ReduxComponent<Model, Chat.Types.Msg>()
 
+type SocketInterop() =
+    static member MessageReceived str = 
+        printfn "Received message: %s" str
+        let m = 
+            str
+            |> Json.parse
+            |> Json.deserialize
+        printfn "%s" m
+
 module MyFuncs =
     let MyReducer state (action: Chat.Types.Msg) =
         match action with

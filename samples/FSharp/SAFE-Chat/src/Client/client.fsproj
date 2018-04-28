@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -6,6 +6,7 @@
     <Compile Include="fable.react.markdown.fs" />
 
     <!-- Global to the app -->
+    <Compile Include="../Shared/Chiron.fs" />
     <Compile Include="../Shared/ChatProtocol.fs" />
     <Compile Include="Router.fs" />
 
@@ -26,6 +27,10 @@
     <Compile Include="Types.fs" />
     <Compile Include="State.fs" />
     <Compile Include="App.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Aether" Version="8.2.0" />
+    <PackageReference Include="FParsec" Version="1.0.3" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

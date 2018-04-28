@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BlazorFSharpLib;
 using BlazorRedux;
 using Chat;
+using Microsoft.AspNetCore.Blazor.Browser.Interop;
 using Microsoft.AspNetCore.Blazor.Browser.Rendering;
 using Microsoft.AspNetCore.Blazor.Browser.Services;
 using Microsoft.FSharp.Collections;
@@ -28,6 +29,8 @@ namespace Blazor
                         options.StateDeserializer = MyFuncs.StateDeserializer;
                     });
             });
+
+            RegisteredFunction.Invoke<bool>("openSocket");
 
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");
         }

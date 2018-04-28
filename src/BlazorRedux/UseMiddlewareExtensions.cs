@@ -88,6 +88,7 @@ namespace BlazorRedux
                 var ctorArgs = new object[args.Length + 1];
                 ctorArgs[0] = next;
                 Array.Copy(args, 0, ctorArgs, 1, args.Length);
+
                 var instance = ActivatorUtilities.CreateInstance(provider, middleware, ctorArgs);
                 if (parameters.Length == 2)
                 {
@@ -95,7 +96,6 @@ namespace BlazorRedux
                 }
 
                 //This below doesn't work yet
-
                 var factory = Compile<object, TState, TAction>(methodinfo, parameters);
 
                 return (state, action) =>

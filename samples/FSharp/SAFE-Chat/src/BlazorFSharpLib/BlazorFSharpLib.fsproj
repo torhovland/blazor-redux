@@ -6,6 +6,16 @@
 
   <ItemGroup>
     <Compile Include="Chiron.fs" />
+
+    <Compile Include="../Shared/ChatProtocol.fs" />
+
+    <Compile Include="Channel/Types.fs" />
+    <Compile Include="Channel/State.fs" />
+
+    <Compile Include="Chat/Types.fs" />
+    <Compile Include="Chat/State.fs" />
+    
+    <Compile Include="Types.fs" />
     <Compile Include="Library.fs" />
   </ItemGroup>
 

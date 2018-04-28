@@ -1,11 +1,26 @@
-﻿<div class="fs-user">
-    <div class="fs-avatar" style="background-image: url(&quot;https://www.gravatar.com/avatar/acbd18db4cc2f85cedef654fccc4a4d8?d=monsterid&quot;);"></div>
-    <h3 id="usernick">foo</h3><span id="userstatus"></span><button id="logout" class="btn" title="Logout"><i class="mdi mdi-logout-variant"></i></button></div>
-<h2><!-- react-text: 12 -->My Channels<!-- /react-text --><button class="btn" title="Create New"><i class=" mdi mdi-plus"></i></button></h2><input type="text" class=" fs-new-channel" placeholder="Type the channel name here..." value="">
-<h2><!-- react-text: 17 -->All Channels<!-- /react-text --><button class="btn" title="Search"><i class="mdi mdi-magnify"></i></button></h2>
-<button class=" btn fs-channel">
-    <h1>Demo</h1><span>Channel for testing purposes. Notice the bots are always ready to keep conversation.</span></button>
-<button class=" btn fs-channel">
-    <h1>Test</h1><span>empty channel</span></button>
-<button class=" btn fs-channel">
-    <h1>About</h1><span>interactive help</span></button>
+﻿@inherits ChatAppComponent
+
+<div class="fs-menu">
+    <div class="fs-user">
+        <div class="fs-avatar" style="background-image: url(&quot;https://www.gravatar.com/avatar/acbd18db4cc2f85cedef654fccc4a4d8?d=monsterid&quot;);"></div>
+        <h3 id="usernick">foo</h3><span id="userstatus"></span><button id="logout" class="btn" title="Logout"><i class="mdi mdi-logout-variant"></i></button>
+    </div>
+    <h2><!-- react-text: 12 -->My Channels<!-- /react-text --><button class="btn" title="Create New"><i class=" mdi mdi-plus"></i></button></h2><input type="text" class=" fs-new-channel" placeholder="Type the channel name here..." value="">
+    <h2><!-- react-text: 17 -->All Channels<!-- /react-text --><button class="btn" title="Search"><i class="mdi mdi-magnify"></i></button></h2>
+    <button class=" btn fs-channel">
+        <h1>Demo</h1><span>Channel for testing purposes. Notice the bots are always ready to keep conversation.</span>
+    </button>
+    <button class=" btn fs-channel">
+        <h1>Test</h1><span>empty channel</span>
+    </button>
+    <button class=" btn fs-channel">
+        <h1>About</h1><span>interactive help</span>
+    </button>
+
+    @*@foreach (var channel in @State.Channels)
+    {
+        <button class=" btn fs-channel">
+            <h1>@channel.Name</h1><span>@channel.Description</span>
+        </button>
+    }*@
+</div>

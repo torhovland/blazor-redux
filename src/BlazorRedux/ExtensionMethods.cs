@@ -5,7 +5,7 @@ namespace BlazorRedux
 {
     public static class ExtensionMethods
     {
-        public static void AddReduxStore<TState, TAction>(
+        public static Store<TState, TAction> AddReduxStore<TState, TAction>(
             this IServiceCollection configure,
             TState initialState,
             Reducer<TState, TAction> rootReducer,
@@ -13,7 +13,9 @@ namespace BlazorRedux
         {
             var reduxOptions = new ReduxOptions<TState>();
             options?.Invoke(reduxOptions);
-            configure.AddSingleton(new Store<TState, TAction>(initialState, rootReducer, reduxOptions));
+            var store = new Store<TState, TAction>(initialState, rootReducer, reduxOptions);
+            configure.AddSingleton(store);
+            return store;
         }
     }
 }

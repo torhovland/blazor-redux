@@ -18,7 +18,7 @@ namespace Blazor
         {
             var serviceProvider = new BrowserServiceProvider(configure =>
             {
-                configure.AddReduxStore<Types.Model, Chat.Types.Msg>(
+                var store = configure.AddReduxStore<Types.Model, Chat.Types.Msg>(
                     new Types.Model("", Chat.Types.ChatState.NotConnected), 
                     MyFuncs.MyReducer,
                     options =>
@@ -28,6 +28,8 @@ namespace Blazor
                         options.StateSerializer = MyFuncs.StateSerializer;
                         options.StateDeserializer = MyFuncs.StateDeserializer;
                     });
+
+                SocketInterop.Store = store;
             });
 
             RegisteredFunction.Invoke<bool>("openSocket");

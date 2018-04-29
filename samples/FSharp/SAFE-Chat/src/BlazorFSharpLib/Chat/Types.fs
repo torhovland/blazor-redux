@@ -23,4 +23,5 @@ type Msg =
     | CreateJoin
     | Join of chanId: string
     | Leave of chanId: string
+    | ServerMessage of string
  

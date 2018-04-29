@@ -7,8 +7,8 @@
     socket.onmessage = function(evt) { onMessage(evt); };
     socket.onerror = function(evt) { onError(evt); };
 
-    var messageReceived =
-        Blazor.platform.findMethod('BlazorFSharpLib', 'BlazorFSharpLib', 'SocketInterop', 'MessageReceived');
+    var messageFromJs =
+        Blazor.platform.findMethod('BlazorFSharpLib', 'BlazorFSharpLib', 'SocketInterop', 'MessageFromJs');
 
     function onOpen(evt) {
         console.log("CONNECTED");
@@ -23,7 +23,7 @@
     function onMessage(evt) {
         console.log('RESPONSE: ' + evt.data);
         var s = JSON.stringify(evt.data);
-        Blazor.platform.callMethod(messageReceived, null, [Blazor.platform.toDotNetString(s)]);
+        Blazor.platform.callMethod(messageFromJs, null, [Blazor.platform.toDotNetString(s)]);
     }
 
     function onError(evt) {

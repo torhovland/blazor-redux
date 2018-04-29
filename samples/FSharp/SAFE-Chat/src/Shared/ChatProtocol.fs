@@ -126,7 +126,10 @@ module Protocol =
 
         static member FromJson (_ : ClientMsg) =
             function
-            | Property "Hello" h as json -> Json.init (Hello h) json
+            //| Property "Hello" h as json -> Json.init (Hello h) json
+            | Property "Hello" h as json ->
+                printfn "Hello: %A" json
+                Json.init (Hello h) json
             | json -> Json.error (sprintf "couldn't deserialise %A to ClientMsg" json) json
 
         static member ToJson (x: ClientMsg) =

@@ -109,10 +109,10 @@ namespace BlazorRedux
             _uriHelper.NavigateTo(newLocation);
         }
 
-        public async void Dispatch(TAction action)
+        public void Dispatch(TAction action)
         {
             var app = _builder.Build(this);
-            await app.Invoke(State, action);
+            app.Invoke(State, action);
         }
 
         void DispatchLocation(NewLocationAction locationAction)
@@ -148,19 +148,17 @@ namespace BlazorRedux
             OnChange(null);
         }
 
-        internal Task Invoke(ref TState state, TAction action)
+        internal TState Invoke(TState state, TAction action)
         {
             lock (_syncRoot)
             {
-                state = _rootReducer(state, action);
-                State = state;
-                Console.WriteLine("State has changed inside InvokeAsync: {0}", _options.StateSerializer(state));
+                State = _rootReducer(state, action);
                 DevToolsInterop.Log(action.ToString(), _options.StateSerializer(State));
                 History.Add(new HistoricEntry<TState, object>(State, action));
             }
 
             OnChange(null);
-            return Task.CompletedTask;
+            return State;
         }
 
         public void ApplyMiddleware(Action<IStoreBuilder<TState, TAction>> builder = null)

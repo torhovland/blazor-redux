@@ -11,12 +11,10 @@ namespace BlazorRedux
 
         public StoreEventDelegate<TState, TAction> Build(Store<TState, TAction> store)
         {
-            StoreEventDelegate<TState, TAction> app = async (TState state,  TAction action) =>
+            StoreEventDelegate<TState, TAction> app = (TState state,  TAction action) =>
             {
-                Console.WriteLine("State before Store InvokeAsync: {0}", JsonUtil.Serialize(state));
-                var _state = state;
-                await store.Invoke(ref state, action);
-                Console.WriteLine("State after InvokeAsync should change to match 'State has changed inside InvokeAsync' above: {0}", JsonUtil.Serialize(state));
+                var newState = store.Invoke(state, action);
+                return newState;
             };
 
             foreach (var component in _components.Reverse())

@@ -1,4 +1,5 @@
 ﻿using BlazorRedux;
+using BlazorReduxLogger;
 using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Blazor.Browser.Rendering;
 using Microsoft.AspNetCore.Blazor.Browser.Services;
@@ -22,22 +23,17 @@ namespace BlazorStandalone
 
             store.ApplyMiddleware(builder =>
             {
-                builder.Use(async (state, action, next) =>
+                builder.Use((state, action, next) =>
                 {
                     Console.WriteLine("Inline logger old state: {0}", JsonUtil.Serialize(state));
-                    Console.WriteLine("Inline logger: {0}", JsonUtil.Serialize(action));
-                    await next(state, action);
-                    Console.WriteLine("Inline logger new state: {0}", JsonUtil.Serialize(state));
+                    Console.WriteLine("Inline logger action: {0}", JsonUtil.Serialize(action));
+                    var newState = next(state, action);
+                    Console.WriteLine("Inline logger new state: {0}", JsonUtil.Serialize(newState));
+                    return newState;
                 });
 
-                //Func<object, string> fn = obj => JsonUtil.Serialize(obj);
-                //builder.UseMiddleware<Logger<MyState, IAction>, MyState, IAction>(serviceProvider, fn);
-
-                /*builder.Use((state, action, next) =>
-                {
-                    Console.WriteLine("2nd Inline logger after middleware class: {0}", action);
-                    return next();
-                });*/
+                Func<object, string> fn = obj => JsonUtil.Serialize(obj);
+                builder.UseMiddleware<Logger<MyState, IAction>, MyState, IAction>(serviceProvider, fn);
             });
 
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");

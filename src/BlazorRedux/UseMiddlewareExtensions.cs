@@ -72,7 +72,7 @@ namespace BlazorRedux
                 }
 
                 var methodinfo = invokeMethods[0];
-                if (!typeof(Task).IsAssignableFrom(methodinfo.ReturnType))
+                if (!typeof(TState).IsAssignableFrom(methodinfo.ReturnType))
                 {
                     //throw new InvalidOperationException(Resources.FormatException_UseMiddlewareNonTaskReturnType(InvokeMethodName, InvokeAsyncMethodName, nameof(Task)));
                     throw new InvalidOperationException();
@@ -145,7 +145,7 @@ namespace BlazorRedux
             });
         }*/
 
-        private static Func<T, TState, TAction, IServiceProvider, Task> Compile<T, TState, TAction>(MethodInfo methodinfo, ParameterInfo[] parameters)
+        private static Func<T, TState, TAction, IServiceProvider, TState> Compile<T, TState, TAction>(MethodInfo methodinfo, ParameterInfo[] parameters)
         {
             // If we call something like
             //
@@ -210,7 +210,7 @@ namespace BlazorRedux
 
             var body = Expression.Call(middlewareInstanceArg, methodinfo, methodArguments);
 
-            var lambda = Expression.Lambda<Func<T, TState, TAction, IServiceProvider, Task>>(body, instanceArg, stateArg, actionArg, providerArg);
+            var lambda = Expression.Lambda<Func<T, TState, TAction, IServiceProvider, TState>>(body, instanceArg, stateArg, actionArg, providerArg);
 
             return lambda.Compile();
         }

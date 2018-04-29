@@ -2,5 +2,5 @@
 
 namespace BlazorRedux
 {
-    public delegate Task StoreEventDelegate<TState, TAction>(TState state, TAction action);
+    public delegate TState StoreEventDelegate<TState, TAction>(TState state, TAction action);
 }

@@ -1,6 +1,5 @@
 ﻿using BlazorRedux;
 using System;
-using System.Threading.Tasks;
 
 namespace BlazorReduxLogger
 {
@@ -15,13 +14,13 @@ namespace BlazorReduxLogger
             _serialize = serialize;
         }
 
-        public Task InvokeAsync(TState state, TAction action)
+        public TState InvokeAsync(TState state, TAction action)
         {
-            Console.WriteLine("State before action: {0}", _serialize(state));
-            Console.WriteLine("Action: {0}", _serialize(action));
-            _next(state, action);
-            Console.WriteLine("State after action: {0}", _serialize(state));
-            return Task.CompletedTask;
+            Console.WriteLine("Class Logger state before action: {0}", _serialize(state));
+            Console.WriteLine("Class Logger action: {0}", _serialize(action));
+            var newState = _next(state, action);
+            Console.WriteLine("Class Logger state after action: {0}", _serialize(newState));
+            return newState;
         }
     }
 }

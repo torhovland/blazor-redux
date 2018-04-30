@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BlazorRedux;
+using BlazorReduxLocation;
 
 namespace BlazorStandalone
 {
@@ -13,7 +14,7 @@ namespace BlazorStandalone
 
             return new MyState
             {
-                Location = Location.Reducer(state.Location, action),
+                Location = LocationReducer.Reducer(state.Location, action),
                 Count = CountReducer(state.Count, action),
                 Forecasts = ForecastsReducer(state.Forecasts, action)
             };

@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\middleware\BlazorReduxLocation\BlazorReduxLocation.csproj" />
     <ProjectReference Include="..\..\middleware\BlazorReduxLogger\BlazorReduxLogger.csproj" />
     <ProjectReference Include="..\..\src\BlazorRedux\BlazorRedux.csproj" />
   </ItemGroup>

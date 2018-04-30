@@ -1,9 +1,9 @@
 ﻿using BlazorRedux;
+using BlazorReduxLocation;
 using BlazorReduxLogger;
-using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Blazor.Browser.Rendering;
 using Microsoft.AspNetCore.Blazor.Browser.Services;
-using System;
+using Microsoft.AspNetCore.Blazor.Services;
 
 namespace BlazorStandalone
 {
@@ -23,17 +23,17 @@ namespace BlazorStandalone
 
             store.ApplyMiddleware(builder =>
             {
-                builder.Use((state, action, next) =>
+                /*builder.Use((state, action, next) =>
                 {
-                    Console.WriteLine("Inline logger old state: {0}", JsonUtil.Serialize(state));
-                    Console.WriteLine("Inline logger action: {0}", JsonUtil.Serialize(action));
+                    //This is how you define inline middleware this one does nothing
+                    //Do stuff here to change state or action prior to hitting the store
                     var newState = next(state, action);
-                    Console.WriteLine("Inline logger new state: {0}", JsonUtil.Serialize(newState));
+                    //Do stuff here with state or action after they hit the store
                     return newState;
-                });
+                });*/
 
-                Func<object, string> fn = obj => JsonUtil.Serialize(obj);
-                builder.UseMiddleware<Logger<MyState, IAction>, MyState, IAction>(serviceProvider, fn);
+                //builder.UseMiddleware<Logger<MyState, IAction>, MyState, IAction>(serviceProvider);
+                builder.UseMiddleware<Location<MyState, IAction>, MyState, IAction>(serviceProvider);
             });
 
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");

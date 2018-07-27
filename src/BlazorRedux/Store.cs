@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Blazor.Services;
 
 namespace BlazorRedux
@@ -28,7 +29,8 @@ namespace BlazorRedux
 
             DevToolsInterop.Reset += OnDevToolsReset;
             DevToolsInterop.TimeTravel += OnDevToolsTimeTravel;
-            DevToolsInterop.Log("initial", _options.StateSerializer(State));
+
+            Task.Run(async () => await DevToolsInterop.Log("initial", _options.StateSerializer(State)));
 
             History = new List<HistoricEntry<TState, object>>
             {
@@ -111,7 +113,8 @@ namespace BlazorRedux
             lock (_syncRoot)
             {
                 State = _rootReducer(State, action);
-                DevToolsInterop.Log(action.ToString(), _options.StateSerializer(State));
+
+                Task.Run(async () => await DevToolsInterop.Log(action.ToString(), _options.StateSerializer(State)));
                 History.Add(new HistoricEntry<TState, object>(State, action));
             }
 
@@ -134,7 +137,7 @@ namespace BlazorRedux
             lock (_syncRoot)
             {
                 State = locationReducer(State, locationAction);
-                DevToolsInterop.Log(locationAction.ToString(), _options.StateSerializer(State));
+                Task.Run(async () => await DevToolsInterop.Log(locationAction.ToString(), _options.StateSerializer(State)));
                 History.Add(new HistoricEntry<TState, object>(State, locationAction));
             }
 

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Blazor.Browser.Interop;
+using System.Threading.Tasks;
+using Microsoft.JSInterop;
 
 namespace BlazorRedux
 {
@@ -33,7 +34,7 @@ namespace BlazorRedux
                 while (Q.Any())
                 {
                     var entry = Q.Dequeue();
-                    LogToJs(entry.Item1, entry.Item2);
+                    Task.Run(async () => await LogToJs(entry.Item1, entry.Item2));
                 }
             }
 
@@ -50,7 +51,7 @@ namespace BlazorRedux
             OnTimeTravel(new StringEventArgs(state));
         }
 
-        public static void Log(string action, string state)
+        public static async Task Log(string action, string state)
         {
             if (!_isReady)
             {
@@ -61,13 +62,13 @@ namespace BlazorRedux
             }
             else
             {
-                LogToJs(action, state);
+                await LogToJs(action, state);
             }
         }
 
-        static void LogToJs(string action, string state)
+        static async Task LogToJs(string action, string state)
         {
-            RegisteredFunction.Invoke<bool>("log", action, state);
+            await JSRuntime.Current.InvokeAsync<bool>("log", action, state);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Blazor.Browser.Interop;
+using Microsoft.JSInterop;
 
 namespace BlazorRedux
 {
@@ -67,7 +67,7 @@ namespace BlazorRedux
 
         static void LogToJs(string action, string state)
         {
-            RegisteredFunction.Invoke<bool>("log", action, state);
+            ((IJSInProcessRuntime)JSRuntime.Current).Invoke<bool>("Blazor.log", action, state);
         }
     }
 }

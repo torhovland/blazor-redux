@@ -18,7 +18,7 @@ function timeTravel(state) {
     Blazor.platform.callMethod(timeTravel, null, [ Blazor.platform.toDotNetString(state) ]);
 }
 
-Blazor.registerFunction('log', (action, state) => {
+window[""Blazor""].log = (action, state) => {
     var json = JSON.parse(state);
 
     if (action === 'initial')
@@ -27,7 +27,7 @@ Blazor.registerFunction('log', (action, state) => {
         window.devTools.send(action, json);
 
     return true;
-});
+};
 
 var config = { name: 'Blazor Redux' }; 
 var extension = window.__REDUX_DEVTOOLS_EXTENSION__;

@@ -1,23 +1,16 @@
-﻿using BlazorRedux;
-using Microsoft.AspNetCore.Blazor.Browser.Rendering;
-using Microsoft.AspNetCore.Blazor.Browser.Services;
+﻿using Microsoft.AspNetCore.Blazor.Hosting;
 
 namespace BlazorHosted.Client
 {
     public class Program
     {
-        public static void Main()
+        public static void Main(string[] args)
         {
-            var serviceProvider = new BrowserServiceProvider(configure =>
-            {
-                configure.AddReduxStore<MyState, IAction>(
-                    new MyState(), Reducers.RootReducer, options =>
-                {
-                    options.GetLocation = state => state.Location;
-                });
-            });
-
-            new BrowserRenderer(serviceProvider).AddComponent<App>("app");
+            CreateHostBuilder(args).Build().Run();
         }
+
+        public static IWebAssemblyHostBuilder CreateHostBuilder(string[] args) =>
+            BlazorWebAssemblyHost.CreateDefaultBuilder()
+                .UseBlazorStartup<Startup>();
     }
 }

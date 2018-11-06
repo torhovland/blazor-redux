@@ -26,7 +26,7 @@ The combination of Blazor and Redux becomes an incredibly compelling platform fo
 
 Follow these steps, or just open `samples.sln` in this repository and take a look.
 
-1. Assuming you have the [.NET Core SDK 2.1.300](https://www.microsoft.com/net/download/dotnet-core/sdk-2.1.300-preview2) or newer, [Visual Studio 15.7](https://www.visualstudio.com/vs/preview/) or newer, and the [Blazor tooling](https://marketplace.visualstudio.com/items?itemName=aspnet.blazor) installed, create a new Blazor project.
+1. Assuming you have the [Blazor requirements](https://blazor.net/docs/get-started.html) installed, create a new Blazor project.
 
 2. Add the [Blazor-Redux NuGet package](https://www.nuget.org/packages/Blazor-Redux/).
 

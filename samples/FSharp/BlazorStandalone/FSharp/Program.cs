@@ -1,29 +1,16 @@
-﻿using Microsoft.AspNetCore.Blazor.Browser.Rendering;
-using Microsoft.AspNetCore.Blazor.Browser.Services;
-using BlazorRedux;
-using FSharpLib;
+﻿using Microsoft.AspNetCore.Blazor.Hosting;
 
 namespace FSharp
 {
     internal class Program
     {
-        public static void Main()
+        public static void Main(string[] args)
         {
-            var serviceProvider = new BrowserServiceProvider(configure =>
-            {
-                configure.AddReduxStore<MyState, MyMsg>(
-                    new MyState("", 0, null), 
-                    MyFuncs.MyReducer, 
-                    options =>
-                {
-                    options.LocationReducer = MyFuncs.LocationReducer;
-                    options.GetLocation = state => state.Location;
-                    options.StateSerializer = MyFuncs.StateSerializer;
-                    options.StateDeserializer = MyFuncs.StateDeserializer;
-                });
-            });
-
-            new BrowserRenderer(serviceProvider).AddComponent<App>("app");
+            CreateHostBuilder(args).Build().Run();
         }
+
+        public static IWebAssemblyHostBuilder CreateHostBuilder(string[] args) =>
+            BlazorWebAssemblyHost.CreateDefaultBuilder()
+                .UseBlazorStartup<Startup>();
     }
 }

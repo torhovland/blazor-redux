@@ -26,6 +26,7 @@ namespace BlazorRedux
             handler?.Invoke(null, e);
         }
 
+        [JSInvokable]
         public static void DevToolsReady()
         {
             lock (SyncRoot)
@@ -40,11 +41,13 @@ namespace BlazorRedux
             _isReady = true;
         }
 
+        [JSInvokable]
         public static void DevToolsReset()
         {
             OnReset(new EventArgs());
         }
 
+        [JSInvokable]
         public static void TimeTravelFromJs(string state)
         {
             OnTimeTravel(new StringEventArgs(state));
@@ -67,7 +70,7 @@ namespace BlazorRedux
 
         static void LogToJs(string action, string state)
         {
-            ((IJSInProcessRuntime)JSRuntime.Current).Invoke<bool>("Blazor.log", action, state);
+            JSRuntime.Current.InvokeAsync<bool>("Blazor.log", action, state);
         }
     }
 }

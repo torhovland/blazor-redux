@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Blazor.Services;
+using Microsoft.AspNetCore.Components.Services;
 
 namespace BlazorRedux
 {

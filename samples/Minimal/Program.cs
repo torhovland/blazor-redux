@@ -1,6 +1,6 @@
 ﻿using BlazorRedux;
-using Microsoft.AspNetCore.Blazor.Browser.Rendering;
-using Microsoft.AspNetCore.Blazor.Browser.Services;
+using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.AspNetCore.Components.Services;
 using Microsoft.AspNetCore.Blazor.Hosting;
 
 namespace Minimal

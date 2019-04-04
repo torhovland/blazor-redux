@@ -5,17 +5,17 @@ namespace BlazorRedux
 {
     public static class ExtensionMethods
     {
-        public static Store<TState, TAction> AddReduxStore<TState, TAction>(
+        public static IServiceCollection AddReduxStore<TState, TAction>(
             this IServiceCollection configure,
             TState initialState,
             Reducer<TState, TAction> rootReducer,
             Action<ReduxOptions<TState>> options = null)
         {
+            configure.AddSingleton<DevToolsInterop>();
             var reduxOptions = new ReduxOptions<TState>();
             options?.Invoke(reduxOptions);
-            var store = new Store<TState, TAction>(initialState, rootReducer, reduxOptions);
-            configure.AddSingleton(store);
-            return store;
+            configure.AddSingleton<Store<TState, TAction>>(sp => new Store<TState, TAction>(initialState, rootReducer, reduxOptions, sp.GetRequiredService<DevToolsInterop>()));
+            return configure;
         }
     }
 }

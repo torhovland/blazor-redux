@@ -2,31 +2,38 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.JSInterop;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorRedux
 {
-    public static class DevToolsInterop
+    public class DevToolsInterop
     {
-        private static readonly object SyncRoot = new object();
-        private static bool _isReady;
-        private static readonly Queue<Tuple<string, string>> Q = new Queue<Tuple<string, string>>();
+        private readonly IServiceProvider _services;
+        private readonly object SyncRoot = new object();
+        private bool _isReady;
+        private readonly Queue<Tuple<string, string>> Q = new Queue<Tuple<string, string>>();
 
-        public static event EventHandler Reset;
-        public static event StringEventHandler TimeTravel;
+        public event EventHandler Reset;
+        public event StringEventHandler TimeTravel;
 
-        private static void OnReset(EventArgs e)
+        public DevToolsInterop(IServiceProvider services)
+        {
+            _services = services;
+        }
+
+        private void OnReset(EventArgs e)
         {
             var handler = Reset;
             handler?.Invoke(null, e);
         }
 
-        private static void OnTimeTravel(StringEventArgs e)
+        private void OnTimeTravel(StringEventArgs e)
         {
             var handler = TimeTravel;
             handler?.Invoke(null, e);
         }
 
-        public static void DevToolsReady()
+        public void DevToolsReady()
         {
             lock (SyncRoot)
             {
@@ -40,17 +47,17 @@ namespace BlazorRedux
             _isReady = true;
         }
 
-        public static void DevToolsReset()
+        public void DevToolsReset()
         {
             OnReset(new EventArgs());
         }
 
-        public static void TimeTravelFromJs(string state)
+        public void TimeTravelFromJs(string state)
         {
             OnTimeTravel(new StringEventArgs(state));
         }
 
-        public static void Log(string action, string state)
+        public void Log(string action, string state)
         {
             if (!_isReady)
             {
@@ -65,9 +72,9 @@ namespace BlazorRedux
             }
         }
 
-        static void LogToJs(string action, string state)
+        void LogToJs(string action, string state)
         {
-            ((IJSInProcessRuntime)JSRuntime.Current).Invoke<bool>("Blazor.log", action, state);
+            _services.GetRequiredService<IJSRuntime>().InvokeAsync<bool>("Blazor.log", action, state).WaitAndUnwrapException();
         }
     }
 }

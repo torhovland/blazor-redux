@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using BlazorHosted.Shared;
 using BlazorRedux;
-using Microsoft.AspNetCore.Blazor;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorHosted.Client
 {

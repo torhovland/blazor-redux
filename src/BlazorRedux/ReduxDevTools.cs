@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Blazor.Components;
-using Microsoft.AspNetCore.Blazor.RenderTree;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace BlazorRedux
 {
-    public class ReduxDevTools : BlazorComponent
+    public class ReduxDevTools : ComponentBase
     {
         // ReSharper disable once RedundantAssignment
         protected override void BuildRenderTree(RenderTreeBuilder builder)

@@ -1,11 +1,11 @@
 ﻿using System;
 using Microsoft.AspNetCore.Blazor;
-using Microsoft.AspNetCore.Blazor.Components;
-using Microsoft.AspNetCore.Blazor.Services;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Services;
 
 namespace BlazorRedux
 {
-    public class ReduxComponent<TState, TAction> : BlazorComponent, IDisposable
+    public class ReduxComponent<TState, TAction> : ComponentBase, IDisposable
     {
         [Inject] public Store<TState, TAction> Store { get; set; }
         [Inject] private IUriHelper UriHelper { get; set; }

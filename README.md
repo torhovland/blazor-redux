@@ -4,7 +4,7 @@
 
 ![Time-traveling debugging with Redux DevTools](images/devtools-router.gif)
 
-This library offers [Redux](https://redux.js.org)-style state management for [Blazor](https://github.com/aspnet/Blazor), with support for both C# and F#. The implementation is based on [Redux.NET](https://github.com/GuillaumeSalles/redux.NET).
+This library offers [Redux](https://redux.js.org)-style state management for [Blazor](https://blazor.net/), with support for both C# and F#. The implementation is based on [Redux.NET](https://github.com/GuillaumeSalles/redux.NET).
 
 The combination of Blazor and Redux becomes an incredibly compelling platform for frontend development&mdash;more compelling than any other alternative, if you ask me:
 
